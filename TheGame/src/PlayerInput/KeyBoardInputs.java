@@ -24,18 +24,22 @@ public class KeyBoardInputs implements KeyListener {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                // TODO Auto-generated method stub
+                // Keyboard Buttons
                int key = e.getKeyCode();
                if (key == KeyEvent.VK_W) {
                      panel.UpdatePosition(0, -5);
                      System.out.println("Up");
                } else if (key == KeyEvent.VK_A) {
                      panel.UpdatePosition(-5, 0);
+                     System.out.println("Left");
                } else if (key == KeyEvent.VK_S) {
                     panel.UpdatePosition(0, 5);
+                     System.out.println("Down");
                } else if (key == KeyEvent.VK_D) {
                     panel.UpdatePosition(5, 0);
+                     System.out.println("Right");
                }
             }
         }
+
 
