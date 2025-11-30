@@ -29,7 +29,7 @@ public class KeyBoardInputs implements KeyListener {
                     panel.Moving(false);
                      
                } else if (key == KeyEvent.VK_S) {
-                     panel.Moving(false);
+                    panel.Moving(false);
                      
                } else if (key == KeyEvent.VK_D) {
                     panel.Moving(false);
@@ -46,20 +46,20 @@ public class KeyBoardInputs implements KeyListener {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                // Keyboard Buttons
+                // Keyboard Buttons Output Display
                int key = e.getKeyCode();
                if (key == KeyEvent.VK_W) {
                     panel.PlayerDir(UP);
-                     
+                    System.out.println("Up");
                } else if (key == KeyEvent.VK_A) {
                     panel.PlayerDir(LEFT);
-                     System.out.println("Left");
+                    System.out.println("Left");
                } else if (key == KeyEvent.VK_S) {
                     panel.PlayerDir(DOWN);
-                     System.out.println("Down");
+                    System.out.println("Down");
                } else if (key == KeyEvent.VK_D) {
                     panel.PlayerDir(RIGHT);
-                     System.out.println("Right");
+                    System.out.println("Right");
                }
                if (key == KeyEvent.VK_SHIFT) {
                     panel.Running(true);
@@ -69,5 +69,3 @@ public class KeyBoardInputs implements KeyListener {
                }
             }
         }
-
-
