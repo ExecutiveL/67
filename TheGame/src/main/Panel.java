@@ -27,7 +27,6 @@ public class Panel extends JPanel {
     private int playerAction = IDLE;
     private int playerDirection = -1;
     private boolean moving = false;
-    private boolean running = false;
     private boolean jumping = false;
 
     public Panel() {
@@ -40,34 +39,22 @@ public class Panel extends JPanel {
         animation();
     }
     private void animation() {
-        //Single Sheet Animation
-        animations = new BufferedImage[6][];
-        int offeset = 0;
+        animations = new BufferedImage[4][8];
 
-        for (int i =0; i < animations.length; i++) {
-           int frameCount = GetSpriteAmount(i);
-           animations[i] = new BufferedImage[frameCount];
-
-              for (int j =0; j < frameCount; j++) {
-                animations[i][j] = image.getSubimage((offeset +j ) * 24, 0, 24, 24);
-              }
-              offeset += frameCount;
+        for(int i =0; i < animations.length; i++) {
+            int framecount = GetSpriteAmount(i);
+            animations[i] = new BufferedImage[framecount];
+            
+            for(int j = 0; j < animations[i].length; j++) {
+                animations[i][j] = image.getSubimage(j * 32 , i * 32 , 32, 32);
+            }
         }
 
-        //Multiple Sheet Animation
-        //animations = new BufferedImage[1][24];
-
-        //for(int i =0; i < animations.length; i++) {
-            //for(int j = 0; j < animations[i].length; j++) {
-                //animations[i][j] = image.getSubimage(j * 24, i * 24, 24, 24);
-            //}
-        //}
-
         
         
-    }//Load image
+ }//Load image
     private void Img() {
-        InputStream is = getClass().getResourceAsStream("/Test.png");
+        InputStream is = getClass().getResourceAsStream("/main_character.png");
 
         try {
             image = ImageIO.read(is);
@@ -97,33 +84,28 @@ public class Panel extends JPanel {
         if(!moving && !jumping) {
             playerAction = IDLE;
             return;
-        }
-        if (jumping) {
+        } else if (jumping) {
             playerAction = JUMPING;
+        } else if (moving) {
+            playerAction = WALKING;
         }
-        if (moving) {
-            if (running) {
-                playerAction = RUNNING;
-            } else {
-                playerAction = WALKING;
-            }
         }
-}
+
     public void UpdatePosition() {
         if (moving) {
-            int speed = running ? 10 : 5;
+            
             switch (playerDirection) {
                 case LEFT:
-                    PlayerX -= speed;
+                    PlayerX -= 5;
                     break;
                 case RIGHT:
-                   PlayerX += speed;
+                   PlayerX += 5;
                     break;
                 case UP:
-                    PlayerY -= speed;
+                    PlayerY -= 5;
                     break;
                 case DOWN:
-                    PlayerY += speed;
+                    PlayerY += 5;
                     break;
             }
          
@@ -158,11 +140,7 @@ public class Panel extends JPanel {
     } //movement
     public void Moving(boolean moving) {
         this.moving = moving;
-    }// running
-    public void Running(boolean running) {
-        this.running = running;
-
-    }
+    }// juMPINH
     public void Jumping (boolean Jumping) {
         this.jumping = Jumping;
     }

@@ -35,9 +35,6 @@ public class KeyBoardInputs implements KeyListener {
                     panel.Moving(false);
                      
                }
-               if (key == KeyEvent.VK_SHIFT) {
-                    panel.Running(false);
-            }
              if (key == KeyEvent.VK_SPACE) {
                panel.Jumping(false);
              }
@@ -60,9 +57,6 @@ public class KeyBoardInputs implements KeyListener {
                } else if (key == KeyEvent.VK_D) {
                     panel.PlayerDir(RIGHT);
                     System.out.println("Right");
-               }
-               if (key == KeyEvent.VK_SHIFT) {
-                    panel.Running(true);
                }
                if (key == KeyEvent.VK_SPACE) {
                     panel.Jumping(true);

@@ -8,6 +8,7 @@ public class Game implements Runnable {
     //Game Loop
     private Thread gameThread;
     private final int FPS = 120;
+    private final int UPS = 200;
 
     public Game() {
         panel = new Panel();
@@ -25,14 +26,31 @@ public class Game implements Runnable {
     public void run() {
         // TODO Auto-generated method stub
         double timePerFrame = 1000000000.0 / FPS;
+        double timePerUpdate = 1000000000.0 / UPS;
         long lastFrameTime = System.nanoTime();
         long current = System.nanoTime();
+
+        long previous = System.nanoTime();
+
         //FPS counter
         int frames = 0;
-        long lastcheck = 0;
+        int updates = 0;
+        long lastcheck = System.currentTimeMillis();
+
+        double deltaUPS = 0;
 
         while (true) {
             current = System.nanoTime();
+            long prev = System.nanoTime();
+
+            deltaUPS += (prev - current) / timePerUpdate;
+
+            if(deltaUPS >= 1) {
+                //update();
+                updates++;
+                deltaUPS--;
+            }
+
             if (current - lastFrameTime >= timePerFrame) {
                 panel.repaint();
                 lastFrameTime = current;
