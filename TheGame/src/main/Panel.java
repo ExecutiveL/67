@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,23 +12,62 @@ import javax.swing.JPanel;
 import PlayerInput.KeyBoardInputs;
 import PlayerInput.MouseInputs;
 
+import static Utils.Constans.PlayerConstants.*;
+import static Utils.Constans.directions.*;
+
 public class Panel extends JPanel {
     //Crosshair
     private int xDelta = 0, yDelta = 0;
     private int PlayerX = 0, PlayerY = 0;
 
     private BufferedImage image;
-    
-    
+    //private BufferedImage[][] animations;
+    private BufferedImage[][] animations;
+    private int AnimationIndex, Animationtick, AnimationSpeed = 20;
+    private int playerAction = IDLE;
+    private int playerDirection = -1;
+    private boolean moving = false;
+    private boolean running = false;
+    private boolean jumping = false;
+
     public Panel() {
         addKeyListener(new KeyBoardInputs(this));
         addMouseListener(new MouseInputs(this));
         addMouseMotionListener(new MouseInputs(this)); 
         Panelsize();
+
         Img();
+        animation();
     }
+    private void animation() {
+        //Single Sheet Animation
+        animations = new BufferedImage[6][];
+        int offeset = 0;
+
+        for (int i =0; i < animations.length; i++) {
+           int frameCount = GetSpriteAmount(i);
+           animations[i] = new BufferedImage[frameCount];
+
+              for (int j =0; j < frameCount; j++) {
+                animations[i][j] = image.getSubimage((offeset +j ) * 24, 0, 24, 24);
+              }
+              offeset += frameCount;
+        }
+
+        //Multiple Sheet Animation
+        //animations = new BufferedImage[1][24];
+
+        //for(int i =0; i < animations.length; i++) {
+            //for(int j = 0; j < animations[i].length; j++) {
+                //animations[i][j] = image.getSubimage(j * 24, i * 24, 24, 24);
+            //}
+        //}
+
+        
+        
+    }//Load image
     private void Img() {
-        InputStream is = getClass().getResourceAsStream("/MC.png");
+        InputStream is = getClass().getResourceAsStream("/Test.png");
 
         try {
             image = ImageIO.read(is);
@@ -35,12 +75,60 @@ public class Panel extends JPanel {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-    }
+    } //Panel size
     private void Panelsize() {
-       Dimension size = new Dimension(960, 576);
+       Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
        setMinimumSize(size);
        setPreferredSize(size);
        setMaximumSize(size);
+    } //Animation
+    private void UpdateAni() {
+        Animationtick++;
+        if (Animationtick >= AnimationSpeed) {
+            Animationtick = 0;
+            AnimationIndex++;
+            if (AnimationIndex >= GetSpriteAmount(playerAction)) {
+                AnimationIndex = 0;
+            }
+        }
+       
+    }
+    public void setAnimation() {
+        if(!moving && !jumping) {
+            playerAction = IDLE;
+            return;
+        }
+        if (jumping) {
+            playerAction = JUMPING;
+        }
+        if (moving) {
+            if (running) {
+                playerAction = RUNNING;
+            } else {
+                playerAction = WALKING;
+            }
+        }
+}
+    public void UpdatePosition() {
+        if (moving) {
+            int speed = running ? 10 : 5;
+            switch (playerDirection) {
+                case LEFT:
+                    PlayerX -= speed;
+                    break;
+                case RIGHT:
+                   PlayerX += speed;
+                    break;
+                case UP:
+                    PlayerY -= speed;
+                    break;
+                case DOWN:
+                    PlayerY += speed;
+                    break;
+            }
+         
+         
+        }
     }
     //rendering
     public void paintComponent(java.awt.Graphics g) {
@@ -49,11 +137,12 @@ public class Panel extends JPanel {
         int width = 50;
         int height = 50;
 
-
+        UpdateAni();
+        setAnimation();
+        UpdatePosition();
          //draw player
-        
         g.fillRect(xDelta - 25, yDelta -25, width, height);
-        g.drawImage(image, PlayerX,PlayerY, null);
+        g.drawImage(animations[playerAction][AnimationIndex], PlayerX, PlayerY,160,160, null);
        
         
         }
@@ -62,11 +151,19 @@ public class Panel extends JPanel {
     public void setCrosshair(int x, int y) {
         this.xDelta = x;
         this.yDelta = y;
-    } 
-    public void UpdatePosition(int x, int y) {
-        PlayerX += x;
-        PlayerY += y;
-        repaint();
+    }// Platyer Direction
+    public void PlayerDir(int direction) {
+        this.playerDirection = direction;
+        moving = true;
+    } //movement
+    public void Moving(boolean moving) {
+        this.moving = moving;
+    }// running
+    public void Running(boolean running) {
+        this.running = running;
+
     }
-   
+    public void Jumping (boolean Jumping) {
+        this.jumping = Jumping;
+    }
 }

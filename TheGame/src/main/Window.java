@@ -16,6 +16,8 @@ public class Window {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);       
         
+        panel.setFocusable(true);
+        panel.requestFocusInWindow();
 
     }
 }
