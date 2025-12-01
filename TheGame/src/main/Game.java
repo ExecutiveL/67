@@ -1,5 +1,9 @@
 package main;
 
+import java.awt.Graphics;
+
+import Entitties.Player;
+
 public class Game implements Runnable {
     
     private Window window;
@@ -10,61 +14,79 @@ public class Game implements Runnable {
     private final int FPS = 120;
     private final int UPS = 200;
 
+    private Player player;
+
     public Game() {
-        panel = new Panel();
+        initClasses();
+
+        panel = new Panel(this);
         window = new Window(panel);
+        
         startGameLoop();
         
+    }
+    private void initClasses() {
+        player = new Player(200,200);
     }
     private void startGameLoop() {
         gameThread = new Thread(this);
         gameThread.start();
     }
-
+    public void update(double deltaTime) {
+        player.update(deltaTime);
+        
+    }
+    public void render(Graphics g) {
+        player.render(g);
+    }
     //Game loop
     @Override
     public void run() {
         // TODO Auto-generated method stub
-        double timePerFrame = 1000000000.0 / FPS;
-        double timePerUpdate = 1000000000.0 / UPS;
-        long lastFrameTime = System.nanoTime();
-        long current = System.nanoTime();
+        double timePerFrame = 1_000_000_000.0 / FPS;
+    double timePerUpdate = 1_000_000_000.0 / UPS;
 
-        long previous = System.nanoTime();
+    long previousTime = System.nanoTime();
+    double deltaU = 0, deltaF = 0;
 
-        //FPS counter
-        int frames = 0;
-        int updates = 0;
-        long lastcheck = System.currentTimeMillis();
+    int frames = 0, updates = 0;
+    long lastCheck = System.currentTimeMillis();
 
-        double deltaUPS = 0;
+    while (true) {
+        long currentTime = System.nanoTime();
+        long elapsed = currentTime - previousTime;
+        double deltaTime = elapsed / 1_000_000_000.0; // convert ns → seconds
+        
+        previousTime = currentTime;
 
-        while (true) {
-            current = System.nanoTime();
-            long prev = System.nanoTime();
+        deltaU += elapsed / timePerUpdate;
+        deltaF += elapsed / timePerFrame;
 
-            deltaUPS += (prev - current) / timePerUpdate;
-
-            if(deltaUPS >= 1) {
-                //update();
-                updates++;
-                deltaUPS--;
-            }
-
-            if (current - lastFrameTime >= timePerFrame) {
-                panel.repaint();
-                lastFrameTime = current;
-                frames++;
-            }
-            //FPS counter
-            if (System.currentTimeMillis() - lastcheck >= 1000) {
-                lastcheck = System.currentTimeMillis();
-                System.out.println("FPS: " + frames);
-                frames = 0;
+        while (deltaU >= 1) {
+            update(deltaTime);
+            updates++;
+            deltaU--;
         }
-        
-    }
-        
 
+        if (deltaF >= 1) {
+            panel.repaint();
+            frames++;
+            deltaF--;
+        }
+
+        if (System.currentTimeMillis() - lastCheck >= 1000) {
+            lastCheck = System.currentTimeMillis();
+            System.out.println("FPS: " + frames + " UPS: " + updates);
+            frames = 0;
+            updates = 0;
+        }
+
+      
+        try { Thread.sleep(1); } catch (InterruptedException e) {}
+        }
+    }
+    public Player getPlayer() {
+        return player;
 }
+
 }

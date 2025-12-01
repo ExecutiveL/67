@@ -54,8 +54,7 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
     @Override
     public void mouseMoved(java.awt.event.MouseEvent e) {
         // TODO Auto-generated method stub
-        //crosshair
-        panel.setCrosshair(e.getX(), e.getY());
+        
         
         
         }

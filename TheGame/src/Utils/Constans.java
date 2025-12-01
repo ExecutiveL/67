@@ -13,7 +13,8 @@ public class Constans {
         public static final int IDLE = 0;
         public static final int WALKING = 1;
         public static final int JUMPING = 2;
-        public static final int DYING = 3;
+        public static final int FALLING = 3;
+        public static final int DYING = 4;
 
         public static int GetSpriteAmount(int playerAction) {
             switch (playerAction) {
@@ -22,7 +23,9 @@ public class Constans {
                 case WALKING:
                     return 8;
                 case JUMPING:
-                    return 8;
+                    return 5;
+                case FALLING:
+                    return 3;
                 case DYING:
                     return 8;
                 default:

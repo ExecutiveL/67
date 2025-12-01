@@ -24,19 +24,19 @@ public class KeyBoardInputs implements KeyListener {
                 // TODO Auto-generated method stub
                 int key = e.getKeyCode();
                   if (key == KeyEvent.VK_W) {
-                      panel.Moving(false);
+                      panel.getGame().getPlayer().setMoving(false);
                } else if (key == KeyEvent.VK_A) {
-                    panel.Moving(false);
+                     panel.getGame().getPlayer().setMoving(false);
                      
                } else if (key == KeyEvent.VK_S) {
-                    panel.Moving(false);
+                     panel.getGame().getPlayer().setMoving(false);
                      
                } else if (key == KeyEvent.VK_D) {
-                    panel.Moving(false);
+                     panel.getGame().getPlayer().setMoving(false);
                      
                }
              if (key == KeyEvent.VK_SPACE) {
-               panel.Jumping(false);
+                 panel.getGame().getPlayer().setJumping(false);
              }
 
         }
@@ -45,21 +45,17 @@ public class KeyBoardInputs implements KeyListener {
             public void keyPressed(KeyEvent e) {
                 // Keyboard Buttons Output Display
                int key = e.getKeyCode();
-               if (key == KeyEvent.VK_W) {
-                    panel.PlayerDir(UP);
-                    System.out.println("Up");
-               } else if (key == KeyEvent.VK_A) {
-                    panel.PlayerDir(LEFT);
+
+               if (key == KeyEvent.VK_A) {
+                    panel.getGame().getPlayer().setPlayerDir(LEFT);
                     System.out.println("Left");
-               } else if (key == KeyEvent.VK_S) {
-                    panel.PlayerDir(DOWN);
-                    System.out.println("Down");
+
                } else if (key == KeyEvent.VK_D) {
-                    panel.PlayerDir(RIGHT);
+                   panel.getGame().getPlayer().setPlayerDir(RIGHT);
                     System.out.println("Right");
                }
                if (key == KeyEvent.VK_SPACE) {
-                    panel.Jumping(true);
+                   panel.getGame().getPlayer().setJumping(true);
                }
             }
         }
