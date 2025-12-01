@@ -7,15 +7,16 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 import static Utils.Constans.PlayerConstants.*;
-import static Utils.Constans.directions.*;
+
 
 public class Player extends Entity {
+
     private BufferedImage[][] animations;
     private int animationIndex, animationTick, animationSpeed = 30;
     private int playerAction = IDLE;
-    private int playerDirection = -1;
-    private boolean moving = false;
-    private boolean jumping = false;
+    private boolean moving = false, jumping = false, attacking = false;
+   
+    private boolean left,right;
     
     public Player(float x, float y) {
         super(x, y);
@@ -23,13 +24,14 @@ public class Player extends Entity {
     }
 
     public void update(double deltaTime) {
+        updatePosition(deltaTime);
         updateAnimation();
         setAnimation();
-        updatePosition(deltaTime);
+        
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][animationIndex], (int)x, (int)y, 160, 160, null);
+        g.drawImage(animations[playerAction][animationIndex], (int)x, (int)y, 100, 100, null);
     }
 
     private void updateAnimation() {
@@ -44,6 +46,7 @@ public class Player extends Entity {
     }
 
     public void setAnimation() {
+
         if (!moving && !jumping) {
             playerAction = IDLE;
         } else if (jumping) {
@@ -54,22 +57,17 @@ public class Player extends Entity {
     }
 
     public void updatePosition(double deltaTime) {
-        double speed = 1000;
-        if (moving) {
-            switch (playerDirection) {
-                case LEFT:  x -= speed * deltaTime; break;
-                case RIGHT: x += speed * deltaTime; break;
-            }
+        double speed = 500;
+        if(left && !right) {
+            x-= speed * deltaTime;
+            moving = true;
+        } else if (right && !left) {
+            x+= speed * deltaTime;
+            moving = true;
+        } else {
+            moving = false;
         }
-    }
-
-    public void setPlayerDir(int direction) {
-        this.playerDirection = direction;
-        moving = true;
-    }
-
-    public void setMoving(boolean moving) {
-        this.moving = moving;
+        
     }
 
     public void setJumping(boolean jumping) {
@@ -90,5 +88,21 @@ public class Player extends Entity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void resetDirBooleans() {
+        left = false;
+        right = false;
+    }
+    public void setLeft(boolean left) {
+        this.left = left;
+    }
+    public void setRight(boolean right) {
+        this.right = right;
+    }
+    public boolean isLeft() {
+        return left;
+    }
+    public boolean isRight() {
+        return right;
     }
 }

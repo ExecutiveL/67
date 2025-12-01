@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import main.Panel;
 
-import static Utils.Constans.directions.*;
+
 
 public class KeyBoardInputs implements KeyListener {
 
@@ -23,16 +23,11 @@ public class KeyBoardInputs implements KeyListener {
             public void keyReleased(KeyEvent e) {
                 // TODO Auto-generated method stub
                 int key = e.getKeyCode();
-                  if (key == KeyEvent.VK_W) {
-                      panel.getGame().getPlayer().setMoving(false);
-               } else if (key == KeyEvent.VK_A) {
-                     panel.getGame().getPlayer().setMoving(false);
-                     
-               } else if (key == KeyEvent.VK_S) {
-                     panel.getGame().getPlayer().setMoving(false);
-                     
+
+                if (key == KeyEvent.VK_A) {
+                     panel.getGame().getPlayer().setLeft(false);
                } else if (key == KeyEvent.VK_D) {
-                     panel.getGame().getPlayer().setMoving(false);
+                     panel.getGame().getPlayer().setRight(false);
                      
                }
              if (key == KeyEvent.VK_SPACE) {
@@ -47,11 +42,11 @@ public class KeyBoardInputs implements KeyListener {
                int key = e.getKeyCode();
 
                if (key == KeyEvent.VK_A) {
-                    panel.getGame().getPlayer().setPlayerDir(LEFT);
+                      panel.getGame().getPlayer().setLeft(true);
                     System.out.println("Left");
 
                } else if (key == KeyEvent.VK_D) {
-                   panel.getGame().getPlayer().setPlayerDir(RIGHT);
+                    panel.getGame().getPlayer().setRight(true);
                     System.out.println("Right");
                }
                if (key == KeyEvent.VK_SPACE) {

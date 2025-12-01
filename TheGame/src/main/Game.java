@@ -85,6 +85,9 @@ public class Game implements Runnable {
         try { Thread.sleep(1); } catch (InterruptedException e) {}
         }
     }
+    public void WindowFocusLost() {
+        player.resetDirBooleans();
+    }
     public Player getPlayer() {
         return player;
 }
