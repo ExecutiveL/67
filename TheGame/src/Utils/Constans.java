@@ -28,7 +28,7 @@ public class Constans {
                 case FALLING:
                     return 3;
                 case ATTACKING:
-                    return 8;
+                    return 4;
                 case DYING:
                     return 8;
                 default:

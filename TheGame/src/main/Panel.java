@@ -8,9 +8,13 @@ import javax.swing.JPanel;
 import PlayerInput.KeyBoardInputs;
 import PlayerInput.MouseInputs;
 
+import static main.Game.GameWidth;
+import static main.Game.GameHeight;;
+
 
 public class Panel extends JPanel {
     private Game game;
+    
     public Panel(Game game) {
         this.game = game;
 
@@ -24,10 +28,9 @@ public class Panel extends JPanel {
         
     }
         private void Panelsize() {
-        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-        setMinimumSize(size);
+        Dimension size = new Dimension(GameWidth, GameHeight);
         setPreferredSize(size);
-        setMaximumSize(size);
+        System.out.println("Size" + GameWidth + ":" + GameHeight);
         }
             public void GameUpdate (double deltaTime) {
             }

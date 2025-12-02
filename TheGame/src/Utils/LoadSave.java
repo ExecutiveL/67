@@ -11,7 +11,7 @@ public class LoadSave {
     public static BufferedImage getSpriteAtlas(String fileName) {
         try (InputStream is = LoadSave.class.getResourceAsStream("/"+ fileName)) {
             if (is == null) {
-                System.err.println("Resource not found: /main_character.png");
+                System.err.println("Resource not found: " + fileName);
                 return null;
             }
             return ImageIO.read(is);
