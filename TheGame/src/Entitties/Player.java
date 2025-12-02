@@ -41,11 +41,13 @@ public class Player extends Entity {
             animationIndex++;
             if (animationIndex >= GetSpriteAmount(playerAction)) {
                 animationIndex = 0;
+                attacking = false;
             }
         }
     }
 
     public void setAnimation() {
+        int start = playerAction;
 
         if (!moving && !jumping) {
             playerAction = IDLE;
@@ -53,6 +55,13 @@ public class Player extends Entity {
             playerAction = JUMPING;
         } else if (moving) {
             playerAction = WALKING;
+        }
+        if (attacking) {
+            playerAction = ATTACKING;
+        }
+        if (start != playerAction) {
+            animationTick = 0;
+            animationIndex = 0;
         }
     }
 
@@ -69,6 +78,10 @@ public class Player extends Entity {
         }
         
     }
+    public void setAttacking(boolean attacking) {
+        this.attacking = attacking;
+
+    }
 
     public void setJumping(boolean jumping) {
         this.jumping = jumping;
@@ -77,7 +90,7 @@ public class Player extends Entity {
     private void loadAnimations() {
         try (InputStream is = getClass().getResourceAsStream("/main_character.png")) {
             BufferedImage image = ImageIO.read(is);
-            animations = new BufferedImage[4][];
+            animations = new BufferedImage[5][];
             for (int i = 0; i < animations.length; i++) {
                 int frameCount = GetSpriteAmount(i);
                 animations[i] = new BufferedImage[frameCount];
