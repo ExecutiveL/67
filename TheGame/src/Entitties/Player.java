@@ -2,9 +2,9 @@ package Entitties;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import javax.imageio.ImageIO;
+
+
+import Utils.LoadSave;
 
 import static Utils.Constans.PlayerConstants.*;
 
@@ -88,8 +88,9 @@ public class Player extends Entity {
     }
 
     private void loadAnimations() {
-        try (InputStream is = getClass().getResourceAsStream("/main_character.png")) {
-            BufferedImage image = ImageIO.read(is);
+
+            BufferedImage image = LoadSave.getSpriteAtlas(LoadSave.PLAYER_ATLAS);
+
             animations = new BufferedImage[5][];
             for (int i = 0; i < animations.length; i++) {
                 int frameCount = GetSpriteAmount(i);
@@ -98,9 +99,6 @@ public class Player extends Entity {
                     animations[i][j] = image.getSubimage(j * 32, i * 32, 32, 32);
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
     public void resetDirBooleans() {
         left = false;
