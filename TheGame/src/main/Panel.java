@@ -1,16 +1,11 @@
 package main;
 
 import java.awt.Dimension;
-import java.awt.Toolkit;
 
 import javax.swing.JPanel;
 
 import PlayerInput.KeyBoardInputs;
 import PlayerInput.MouseInputs;
-
-import static main.Game.GameWidth;
-import static main.Game.GameHeight;;
-
 
 public class Panel extends JPanel {
     private Game game;
@@ -28,12 +23,10 @@ public class Panel extends JPanel {
         
     }
         private void Panelsize() {
-        Dimension size = new Dimension(GameWidth, GameHeight);
+        Dimension size = new Dimension(game.getGameWidth(), game.getGameHeight());
         setPreferredSize(size);
-        System.out.println("Size" + GameWidth + ":" + GameHeight);
+        System.out.println("Size" + game.getGameWidth() + ":" + game.getGameHeight());
         }
-            public void GameUpdate (double deltaTime) {
-            }
         public void paintComponent(java.awt.Graphics g) {
             super.paintComponent(g);
             game.render(g);

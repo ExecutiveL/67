@@ -5,8 +5,9 @@ import java.awt.image.BufferedImage;
 
 
 import Utils.LoadSave;
-
+import Utils.DisplayManager;
 import static Utils.Constans.PlayerConstants.*;
+
 
 
 public class Player extends Entity {
@@ -31,7 +32,7 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][animationIndex], (int)x, (int)y, 100, 100, null);
+        g.drawImage(animations[playerAction][animationIndex],(int)x, (int)y,DisplayManager.scale(100),DisplayManager.scale(100),null);
     }
 
     private void updateAnimation() {

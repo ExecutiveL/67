@@ -1,6 +1,8 @@
 package main;
 
+import Utils.DisplayManager;
 import java.awt.Graphics;
+import Levels.levelmaniger;
 
 import Entitties.Player;
 
@@ -16,13 +18,7 @@ public class Game implements Runnable {
 
     private Player player;
 
-    public final static int tileDefaultSize = 32;
-    public final static float Scale = 1.0f;
-    public final static int TilesWitdth = 32;
-    public final static int TilesHeight = 32;
-    public final static int TileSize = (int)(tileDefaultSize * Scale);
-    public final static int GameWidth = TileSize * TilesWitdth;
-     public final static int GameHeight = TileSize * TilesHeight;
+    private levelmaniger levelmaniger;
 
     public Game() {
         initClasses();
@@ -35,6 +31,7 @@ public class Game implements Runnable {
     }
     private void initClasses() {
         player = new Player(200,200);
+        levelmaniger = new levelmaniger(this);
     }
     private void startGameLoop() {
         gameThread = new Thread(this);
@@ -42,16 +39,26 @@ public class Game implements Runnable {
     }
     public void update(double deltaTime) {
         player.update(deltaTime);
+        levelmaniger.update();
         
     }
     public void render(Graphics g) {
         player.render(g);
+        levelmaniger.draw(g);
+    }
+      
+    public int getGameWidth() {
+        return DisplayManager.GameWidth;
+    }
+
+    public int getGameHeight() {
+        return DisplayManager.GameHeight;
     }
     //Game loop
     @Override
     public void run() {
         // TODO Auto-generated method stub
-        double timePerFrame = 1_000_000_000.0 / FPS;
+    double timePerFrame = 1_000_000_000.0 / FPS;
     double timePerUpdate = 1_000_000_000.0 / UPS;
 
     long previousTime = System.nanoTime();
@@ -98,6 +105,5 @@ public class Game implements Runnable {
     }
     public Player getPlayer() {
         return player;
-}
-
+    }
 }

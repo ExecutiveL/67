@@ -15,7 +15,7 @@ public class Window {
         frame.pack();
         
         frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
+        
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.addWindowFocusListener(new WindowFocusListener() {
@@ -34,9 +34,6 @@ public class Window {
             }
             
         });
-        
-        
-        
 
     }
 }
