@@ -16,7 +16,7 @@ public class levelmaniger {
         this.game = game;
         //levelSprite = LoadSave.getSpriteAtlas(LoadSave.LEVEL_ATLAS);
         importOutsideSprite();
-        level = new level(LoadSave.GetLevelData());
+        //level = new level(LoadSave.GetLevelData());
  
     }
     private void importOutsideSprite() {
@@ -32,7 +32,7 @@ public class levelmaniger {
             }
         }
     public void draw(Graphics g) {
-        for (int j = 0; )
+        //for (int j = 0; )
        g.drawImage(levelSprite[0], 300, 300,100,100, null);
     }
     public void update() {

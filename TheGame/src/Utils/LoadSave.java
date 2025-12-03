@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 public class LoadSave {
     public static final String PLAYER_ATLAS = "main_character.png";
     public static final String LEVEL_ATLAS = "Tiles.png";
-    public static final String LEVEL_MAP = "level.png";
+   // public static final String LEVEL_MAP = "level.png";
 
     public static BufferedImage getSpriteAtlas(String fileName) {
         try (InputStream is = LoadSave.class.getResourceAsStream("/"+ fileName)) {
@@ -23,7 +23,7 @@ public class LoadSave {
             return null;
         }
     }
-    public static int[][] GetLevelData() {
+    /* public static int[][] GetLevelData() {
         int[][] leveldata = new int[100][100];
         BufferedImage img = getSpriteAtlas(LEVEL_MAP);
 
@@ -37,5 +37,5 @@ public class LoadSave {
         }
         return leveldata;
     }
+} */
 }
-
