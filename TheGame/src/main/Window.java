@@ -18,6 +18,7 @@ public class Window {
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        frame.setResizable(false);
         frame.addWindowFocusListener(new WindowFocusListener() {
 
             @Override

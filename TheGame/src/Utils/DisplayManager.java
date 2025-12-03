@@ -12,7 +12,7 @@ public class DisplayManager {
     public static final int baseWidth = 1024;
     public static final int baseHeight = 768;
 
-    // Uniform scale factor
+    // Uniform scale 
     public static final float scale = Math.min(
         (float) GameWidth / baseWidth,
         (float) GameHeight / baseHeight

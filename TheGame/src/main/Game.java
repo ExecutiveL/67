@@ -30,7 +30,7 @@ public class Game implements Runnable {
         
     }
     private void initClasses() {
-        player = new Player(200,200);
+        player = new Player(100,700);
         levelmaniger = new levelmaniger(this);
     }
     private void startGameLoop() {
@@ -43,8 +43,8 @@ public class Game implements Runnable {
         
     }
     public void render(Graphics g) {
-        player.render(g);
         levelmaniger.draw(g);
+        player.render(g);
     }
       
     public int getGameWidth() {
