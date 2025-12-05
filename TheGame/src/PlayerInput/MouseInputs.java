@@ -20,6 +20,7 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
         // TODO Auto-generated method stub
         if (e.getButton() == MouseEvent.BUTTON1){
             panel.getGame().getPlayer().setAttacking(true);
+            System.out.println("[LEFT CLICK] Attack");
         }
         
     }
@@ -63,5 +64,6 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
         }
         
     }
+
 
 
