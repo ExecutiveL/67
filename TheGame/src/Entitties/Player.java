@@ -5,30 +5,38 @@ import java.awt.image.BufferedImage;
 
 
 import Utils.LoadSave;
-
 import Utils.Checker;
 import Utils.DisplayManager;
-
 import static Utils.Constans.PlayerConstants.*;
+
 
 
 
 public class Player extends Entity {
 
     private BufferedImage[][] animations;
-    private int animationIndex, animationTick, animationSpeed = 30;
+    private int animationIndex, animationTick, animationSpeed = 20;
     private int playerAction = IDLE;
-    private boolean moving = false, jumping = false, attacking = false;
+    private boolean moving = false, attacking = false;
     private int[][] leveldata;
-    private boolean left,right;
+    private boolean left,right,jump;
+    private float playerSpeed = 2.0f;
+    private Float Xspeed = 0f;
 
-    private float XdrawOffset = 22 * DisplayManager.SCALE;
-    private float YdrawOffset = 53 * DisplayManager.SCALE;
+    private float XdrawOffset = 6 * DisplayManager.SCALE;
+    private float YdrawOffset = 7 * DisplayManager.SCALE;
+
+    //talon
+    private float AirSpeed =0f;
+    private float Gravity = 0.05f * DisplayManager.SCALE;
+    private float JumpSpeed = -2.25f * DisplayManager.SCALE;
+    private float FallSpeed = 0.5f * DisplayManager.SCALE;
+    private boolean AtAir = false;
     
     public Player(float x, float y,int width, int height) {
         super(x, y,width,height);
         loadAnimations();
-       Hitbox(x, y, 20 * DisplayManager.SCALE, 32 * DisplayManager.SCALE);
+        Hitbox(x, y, 22 * DisplayManager.SCALE, 24 * DisplayManager.SCALE);
 
     }
 
@@ -45,7 +53,6 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g) {
-        
         g.drawImage(animations[playerAction][animationIndex], (int)(hitbox.x - XdrawOffset), (int)(hitbox.y - YdrawOffset), width , height,null);
         DrawHitbox(g);
     }
@@ -65,50 +72,99 @@ public class Player extends Entity {
     public void setAnimation() {
         int start = playerAction;
 
-        if (!moving && !jumping) {
-            playerAction = IDLE;
-        } else if (jumping) {
-            playerAction = JUMPING;
-        } else if (moving) {
-            playerAction = WALKING;
+        if (AtAir) {
+            if (AirSpeed < 0) {
+                 playerAction = JUMPING;
+            } else {
+                playerAction = FALLING;
+            }
         }
+
+        else if (moving) {
+            playerAction = WALKING;
+        } else {
+            playerAction = IDLE;
+        }
+
         if (attacking) {
             playerAction = ATTACKING;
         }
+
         if (start != playerAction) {
             animationTick = 0;
             animationIndex = 0;
         }
+       
     }
 
     public void updatePosition(double deltaTime) {
-        float Xspeed = 0,Yspeed = 0;
-        int speed = 2;
 
         moving = false;
-        if (!left && !right)
-            return;
-        if(left && !right) {
-            Xspeed = -speed;
-            
-        } else if (right && !left) 
-            Xspeed = speed;
         
-        if(Checker.PositionVerification(hitbox.x+Xspeed, hitbox.y+Yspeed,hitbox.width,hitbox.height,leveldata)) {
-            hitbox.x += Xspeed;
-            hitbox.y += Yspeed;
-
-            moving = true;
+        if (jump) {
+           Jumping();
         }
+
+       if (!left && !right) {
+            Xspeed = 0f;
+       } else if (left && !right) {
+            Xspeed = -playerSpeed;
+       } else if (!left && right) {
+            Xspeed = playerSpeed;
+       } else {
+        Xspeed = 0f;
+       }
+
+       if (Xspeed == 0 && !AtAir)
+            return;
+        
+        if (!AtAir) {
+            if (!Checker.OnTheTile(hitbox, leveldata)) {
+                AtAir =true;
+            }
+        } 
+    
+        if (AtAir) {
+            if (Checker.PositionVerification(hitbox.x, hitbox.y + AirSpeed, hitbox.width, hitbox.height, leveldata)) {
+                hitbox.y += AirSpeed;
+                AirSpeed += Gravity;
+
+                updateXposition(AirSpeed);
+            } else {
+                hitbox.y = Checker.FloorAndRoofChecker(hitbox,AirSpeed);
+                if(AirSpeed > 0) {
+                    resetInAir();
+                } else {
+                    AirSpeed = FallSpeed;
+                    updateXposition(AirSpeed);
+                }
+            }
+        } else {
+            updateXposition(Xspeed);
+        }
+        moving = true;
         
     }
+    private void updateXposition(float xspeed) {
+         if(Checker.PositionVerification(hitbox.x + Xspeed, hitbox.y,hitbox.width, hitbox.height,leveldata)) {
+            hitbox.x += Xspeed;
+            
+            
+        } else {
+            hitbox.x = Checker.CloserToWall(hitbox,Xspeed);
+        }
+    }
+
     public void setAttacking(boolean attacking) {
         this.attacking = attacking;
 
     }
 
-    public void setJumping(boolean jumping) {
-        this.jumping = jumping;
+    public void Jumping() {
+        if (AtAir)
+            return;
+        AtAir = true;
+        AirSpeed = JumpSpeed;
     }
 
     private void loadAnimations() {
@@ -126,6 +182,9 @@ public class Player extends Entity {
     }
     public void loadleveldata(int[][] leveldata) {
         this.leveldata = leveldata;
+        if(!Checker.OnTheTile(hitbox, leveldata)) {
+            AtAir = true;
+        }
     }
     
    /*  public void OutofBounds() {
@@ -153,4 +212,13 @@ public class Player extends Entity {
     public boolean isRight() {
         return right;
     }
+    private void resetInAir() {
+        AtAir = false;
+        AirSpeed = 0;
+
+    }
+    public void setJumping(boolean jump) {
+        this.jump = jump;
+    }
 }
+

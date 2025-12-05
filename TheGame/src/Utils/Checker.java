@@ -1,6 +1,8 @@
 package Utils;
 
-import Levels.level;
+import java.awt.geom.Rectangle2D;
+
+
 
 public class Checker {
 
@@ -24,11 +26,47 @@ public class Checker {
 
         int value = leveldata[(int)YIndex][(int)xIndex];
 
-        if (value >= 60 || value < 0 || value != 48) {
+        if (value >= 16 || value < 0 || value != 0) {
             return true;
         } else {
             return false;
         }
 
+    }
+    public static float CloserToWall(Rectangle2D.Float hitbox, float Xspeed) {
+        int currentTille = (int)(hitbox.x / DisplayManager.TILES_SIZE); 
+        if (Xspeed > 0) {
+
+            int TileXpos = currentTille * DisplayManager.TILES_SIZE;
+            int XoffSet = (int)(DisplayManager.TILES_SIZE - hitbox.width);
+            return TileXpos + XoffSet -1;
+
+        } else {
+            return currentTille * DisplayManager.TILES_SIZE;
+
+        }
+    }
+    public static float FloorAndRoofChecker(Rectangle2D.Float hitbox, float AirSpeed) {
+        int currentTille = (int)(hitbox.y / DisplayManager.TILES_SIZE);
+        if (AirSpeed > 0) {
+            
+
+            int TileYpos = currentTille * DisplayManager.TILES_SIZE;
+            int YoffSet = (int)(DisplayManager.TILES_SIZE - hitbox.height);
+
+             return TileYpos + YoffSet -1;
+
+        } else {
+            return currentTille * DisplayManager.TILES_SIZE;
+
+        }
+    }
+    public static boolean OnTheTile(Rectangle2D.Float hitbox, int[][] leveldata) {
+        if (!tileBlock(hitbox.x,hitbox.y + hitbox.height +1,leveldata)) {
+             if (!tileBlock(hitbox.x + hitbox.width,hitbox.y + hitbox.height + 1,leveldata)) {
+                return false;
+             }
+        }
+        return true;
     }
 }

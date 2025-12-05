@@ -21,11 +21,12 @@ public abstract class Entity {
 
     }
     protected void Hitbox(float x, float y, float width, float height) {
-        hitbox = new Rectangle2D.Float( x, y,width,height);
+        hitbox = new Rectangle2D.Float(x, y,width,height);
     }
     protected void DrawHitbox(Graphics g) {
         g.setColor(Color.RED);
-        g.drawRect((int)hitbox.x, (int)hitbox.y, (int) hitbox.width, (int)hitbox.height);
+        g.drawRect((int)hitbox.x, (int) hitbox.y, (int) hitbox.width, (int)hitbox.height);
+        
     }
    // protected void UpdateHitbox() {
      //   hitbox.x = (int) x;

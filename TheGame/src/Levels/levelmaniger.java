@@ -23,13 +23,13 @@ public class levelmaniger {
 		BufferedImage img = LoadSave.getSpriteAtlas(LoadSave.LEVEL_ATLAS);
 		System.out.println("Image size: " + img.getWidth() + "x" + img.getHeight());
 
-		 int tileWidth = 32;
-   		 int tileHeight = 32;
+		 int tileWidth = 16;
+   		 int tileHeight = 16;
 
 		 int cols = img.getWidth() / tileWidth;
 		int rows = img.getHeight() / tileHeight;
 
-		levelSprite = new BufferedImage[60];
+		levelSprite = new BufferedImage[16];
 		for (int j = 0; j < rows; j++)
 			for (int i = 0; i < cols; i++) {
 				int index = j * cols + i;
@@ -43,7 +43,7 @@ public class levelmaniger {
 				int index = level.getSpriteIndex(i, j);
 				g.drawImage(levelSprite[index], DisplayManager.TILES_SIZE * i, DisplayManager.TILES_SIZE * j, DisplayManager.TILES_SIZE, DisplayManager.TILES_SIZE, null);
 
-				g.setColor(Color.white);
+				g.setColor(Color.BLACK);
 				g.drawString(String.valueOf(index), i * DisplayManager.TILES_SIZE + 10, j * DisplayManager.TILES_SIZE + 20);
 
 			}

@@ -8,7 +8,6 @@ import Entitties.Player;
 
 public class Game implements Runnable {
     
-    private Window window;
     private Panel panel;
 
     //Game Loop
@@ -24,14 +23,14 @@ public class Game implements Runnable {
         initClasses();
 
         panel = new Panel(this);
-        window = new Window(panel);
+        new Window(panel);
         
         startGameLoop();
         
     }
     private void initClasses() {
         levelmaniger = new levelmaniger(this);
-        player = new Player(200, 200, (int) (64 * DisplayManager.SCALE), (int) (70 * DisplayManager.SCALE));
+        player = new Player(100, 100, (int) (36 * DisplayManager.SCALE), (int) (40 * DisplayManager.SCALE));
         player.loadleveldata(levelmaniger.getCurrentLevel().getLevelData());
        
     }

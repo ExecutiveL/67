@@ -8,8 +8,8 @@ import javax.imageio.ImageIO;
 
 public class LoadSave {
     public static final String PLAYER_ATLAS = "main_character.png";
-    public static final String LEVEL_ATLAS = "ForestTile.png";
-    public static final String LEVEL_MAP = "Forest_Stage.png";
+    public static final String LEVEL_ATLAS = "level1_tiles.png";
+    public static final String LEVEL_MAP = "level1.png";
 
     public static BufferedImage getSpriteAtlas(String fileName) {
        BufferedImage img = null;
@@ -41,7 +41,7 @@ public class LoadSave {
         for (int i = 0; i < img.getWidth(); i++) {
             Color color = new Color(img.getRGB(i, j));
             int value = color.getRed();
-            if (value >= 60) value = 0;
+            if (value >= 16) value = 0;
             lvlData[j][i] = value;
         }
     }
