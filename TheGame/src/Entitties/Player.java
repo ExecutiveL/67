@@ -40,8 +40,8 @@ public class Player extends Entity {
 
     }
 
-    public void update(double deltaTime) {
-        updatePosition(deltaTime);
+    public void update() {
+        updatePosition();
        
         //OutofBounds();
         updateAnimation();
@@ -89,7 +89,6 @@ public class Player extends Entity {
         if (attacking) {
             playerAction = ATTACKING;
         }
-
         if (start != playerAction) {
             animationTick = 0;
             animationIndex = 0;
@@ -97,7 +96,7 @@ public class Player extends Entity {
        
     }
 
-    public void updatePosition(double deltaTime) {
+    public void updatePosition() {
 
         moving = false;
         

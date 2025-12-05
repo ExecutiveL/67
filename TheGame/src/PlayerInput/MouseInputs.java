@@ -4,7 +4,10 @@ package PlayerInput;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
+import GameStates.gamestate;
 import main.Panel;
+
 
 public class MouseInputs implements MouseListener, MouseMotionListener {
 
@@ -16,19 +19,34 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 
     }
     @Override
-    public void mouseClicked(java.awt.event.MouseEvent e) {
-        // TODO Auto-generated method stub
-        if (e.getButton() == MouseEvent.BUTTON1){
-            panel.getGame().getPlayer().setAttacking(true);
-            System.out.println("[LEFT CLICK] Attack");
+    public void mouseClicked(MouseEvent e) {
+        switch (gamestate.state) {
+            case MENU:
+                panel.getGame().GetMenu().MouseClicked(e);;
+                break;
+            case PLAYING:
+                panel.getGame().getPlaying().MouseClicked(e);
+                break;
+            default:
+                break;
         }
+       
         
     }
 
     @Override
     public void mousePressed(java.awt.event.MouseEvent e) {
         // TODO Auto-generated method stub
-        
+         switch (gamestate.state) {
+            case MENU:
+                panel.getGame().GetMenu().MousePressed(e);;
+                break;
+            case PLAYING:
+                panel.getGame().getPlaying().MousePressed(e);;
+                break;
+            default:
+                break;
+         }
     }
 
     @Override

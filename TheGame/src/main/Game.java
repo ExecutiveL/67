@@ -2,9 +2,10 @@ package main;
 
 import Utils.DisplayManager;
 import java.awt.Graphics;
-import Levels.levelmaniger;
 
-import Entitties.Player;
+import GameStates.Menu;
+import GameStates.Playing;
+import GameStates.gamestate;
 
 public class Game implements Runnable {
     
@@ -15,9 +16,8 @@ public class Game implements Runnable {
     private final int FPS = 120;
     private final int UPS = 200;
 
-    private Player player;
-
-    private levelmaniger levelmaniger;
+    private Playing playing;
+    private Menu menu;
 
     public Game() {
         initClasses();
@@ -29,23 +29,38 @@ public class Game implements Runnable {
         
     }
     private void initClasses() {
-        levelmaniger = new levelmaniger(this);
-        player = new Player(100, 100, (int) (36 * DisplayManager.SCALE), (int) (40 * DisplayManager.SCALE));
-        player.loadleveldata(levelmaniger.getCurrentLevel().getLevelData());
-       
+        menu = new Menu(this);
+        playing = new Playing(this);
     }
     private void startGameLoop() {
         gameThread = new Thread(this);
         gameThread.start();
     }
-    public void update(double deltaTime) {
-        player.update(deltaTime);
-        levelmaniger.update();
+    public void update() {
+        switch(gamestate.state) {
+            case MENU:
+                menu.Update();
+                break;
+            case PLAYING:
+                playing.Update();
+                break;
+            default:
+                break;
+        }
         
     }
     public void render(Graphics g) {
-        levelmaniger.draw(g);
-        player.render(g);
+        switch(gamestate.state) {
+            case MENU:
+                menu.draw(g);
+                break;
+            case PLAYING:
+                playing.draw(g);
+                break;
+            default:
+                break;
+        }
+        
     }
       
     public int getGameWidth() {
@@ -71,7 +86,8 @@ public class Game implements Runnable {
     while (true) {
         long currentTime = System.nanoTime();
         long elapsed = currentTime - previousTime;
-        double deltaTime = elapsed / 1_000_000_000.0; // convert ns → seconds
+        
+        
         
         previousTime = currentTime;
 
@@ -79,7 +95,7 @@ public class Game implements Runnable {
         deltaF += elapsed / timePerFrame;
 
         while (deltaU >= 1) {
-            update(deltaTime);
+            update();
             updates++;
             deltaU--;
         }
@@ -102,9 +118,15 @@ public class Game implements Runnable {
         }
     }
     public void WindowFocusLost() {
-        player.resetDirBooleans();
+        if(gamestate.state == gamestate.PLAYING) {
+            playing.getPlayer().resetDirBooleans();
+        }
     }
-    public Player getPlayer() {
-        return player;
+    public Menu GetMenu() {
+        return menu;
     }
+    public Playing getPlaying() {
+        return playing;
+    }
+   
 }

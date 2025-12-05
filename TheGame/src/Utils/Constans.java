@@ -1,7 +1,7 @@
 package Utils;
 
 public class Constans {
-    
+
     public static class directions {
         public static final int LEFT = 0;
         public static final int RIGHT = 1;

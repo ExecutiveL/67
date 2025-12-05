@@ -2,6 +2,8 @@ package PlayerInput;
 
 import java.awt.event.KeyListener;
 
+import GameStates.gamestate;
+
 import java.awt.event.KeyEvent;
 import main.Panel;
 
@@ -21,37 +23,33 @@ public class KeyBoardInputs implements KeyListener {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                // TODO Auto-generated method stub
-                int key = e.getKeyCode();
+                
+                switch (gamestate.state) {
+                    case MENU:
+                        panel.getGame().GetMenu().KeyReleased(e);
+                        break;
+                    case PLAYING:
+                    panel.getGame().getPlaying().KeyReleased(e);
+                    default:
+                        break;
+                }
+                
+            }
 
-                if (key == KeyEvent.VK_A) {
-                     panel.getGame().getPlayer().setLeft(false);
-               } else if (key == KeyEvent.VK_D) {
-                     panel.getGame().getPlayer().setRight(false);
-                     
-               }
-             if (key == KeyEvent.VK_SPACE) {
-                 panel.getGame().getPlayer().setJumping(false);
-             }
-
-        }
 
             @Override
             public void keyPressed(KeyEvent e) {
-                // Keyboard Buttons Output Display
-               int key = e.getKeyCode();
-
-               if (key == KeyEvent.VK_A) {
-                   panel.getGame().getPlayer().setLeft(true);
-                   System.out.println("[A] Left");
-               } else if (key == KeyEvent.VK_D) {
-                   panel.getGame().getPlayer().setRight(true);
-                   System.out.println("[D] Right");
-               }
-               if (key == KeyEvent.VK_SPACE) {
-                   panel.getGame().getPlayer().setJumping(true);
-                   System.out.println("[SPACE] Jump");
-               }
+                 switch (gamestate.state) {
+                    case MENU:
+                        panel.getGame().GetMenu().KeyPressed(e);
+                        break;
+                    case PLAYING:
+                        panel.getGame().getPlaying().KeyPressed(e);
+                        break;
+                    default:
+                        break;
+                }
+             
             }
         }
 
