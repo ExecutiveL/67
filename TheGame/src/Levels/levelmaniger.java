@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import Utils.LoadSave;
+import java.awt.Color;
 import main.Game;
 
 
@@ -14,51 +15,35 @@ public class levelmaniger {
     private BufferedImage[] levelSprite;
     private level level;
 
-    // Define how large each tile should be drawn on screen
-    private static final int TILE_SIZE = 80;
-
     public levelmaniger(Game game) {
-        this.game = game;
-        importOutsideSprite();
-        level = new level(LoadSave.GetLevelData());
-    }
+     this.game = game;
+		importOutsideSprites();
+		level = new level(LoadSave.GetLevelData());
+	}
 
-    private void importOutsideSprite() {
-        BufferedImage img = LoadSave.getSpriteAtlas(LoadSave.LEVEL_ATLAS);
-        System.out.println("Atlas size: " + img.getWidth() + "x" + img.getHeight());
+	private void importOutsideSprites() {
+		BufferedImage img = LoadSave.getSpriteAtlas(LoadSave.LEVEL_ATLAS);
+		levelSprite = new BufferedImage[48];
+		for (int j = 0; j < 4; j++)
+			for (int i = 0; i < 12; i++) {
+				int index = j * 12 + i;
+				levelSprite[index] = img.getSubimage(i * 32, j * 32, 32, 32);
+			}
+	}
 
-        int tileSize = 16;
-        int cols = img.getWidth() / tileSize;   
-        int rows = img.getHeight() / tileSize;  
+	public void draw(Graphics g) {
+		for (int j = 0; j < Game.TILES_IN_HEIGHT; j++)
+			for (int i = 0; i < Game.TILES_IN_WIDTH; i++) {
+				int index = level.getSpriteIndex(i, j);
+				g.drawImage(levelSprite[index], Game.TILES_SIZE * i, Game.TILES_SIZE * j, Game.TILES_SIZE, Game.TILES_SIZE, null);
+				g.setColor(Color.BLACK);
+				g.drawString(String.valueOf(index), i * TILE_SIZE + 10, j * TILE_SIZE + 20);
 
-        levelSprite = new BufferedImage[rows * cols];
+			}
+	}
 
-        for (int j = 0; j < rows; j++) {
-            for (int i = 0; i < cols; i++) {
-                int index = j * cols + i;
-                levelSprite[index] = img.getSubimage(i * tileSize, j * tileSize, tileSize, tileSize);
-            }
-        }
-    }
+	public void update() {
 
-    public void draw(Graphics g) {
-        if (level == null || LoadSave.GetLevelData().length == 0) {
-            System.err.println("No level data to draw!");
-            return;
-        }
+	}
 
-        int[][] levelData = LoadSave.GetLevelData();
-
-        for (int j = 0; j < levelData.length; j++) {
-            for (int i = 0; i < levelData[0].length; i++) {
-                int index = level.getSpriteIndex(i, j);
-                if (index >= 0 && index < levelSprite.length) {
-                    g.drawImage(levelSprite[index], i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE, null);
-                }
-            }
-        }
-    }
-
-    public void update() {
-    }
 }
