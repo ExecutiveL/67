@@ -42,15 +42,16 @@ public class KeyBoardInputs implements KeyListener {
                int key = e.getKeyCode();
 
                if (key == KeyEvent.VK_A) {
-                      panel.getGame().getPlayer().setLeft(true);
-                    System.out.println("Left");
-
+                   panel.getGame().getPlayer().setLeft(true);
+                   System.out.println("[A] Left");
                } else if (key == KeyEvent.VK_D) {
-                    panel.getGame().getPlayer().setRight(true);
-                    System.out.println("Right");
+                   panel.getGame().getPlayer().setRight(true);
+                   System.out.println("[D] Right");
                }
                if (key == KeyEvent.VK_SPACE) {
                    panel.getGame().getPlayer().setJumping(true);
+                   System.out.println("[SPACE] Jump");
                }
             }
         }
+
