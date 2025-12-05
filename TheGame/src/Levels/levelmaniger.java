@@ -21,11 +21,19 @@ public class levelmaniger {
 
 	private void importOutsideSprites() {
 		BufferedImage img = LoadSave.getSpriteAtlas(LoadSave.LEVEL_ATLAS);
-		levelSprite = new BufferedImage[54];
-		for (int j = 0; j < 4; j++)
-			for (int i = 0; i < 12; i++) {
-				int index = j * 12 + i;
-				levelSprite[index] = img.getSubimage(i * 32, j * 32, 32, 32);
+		System.out.println("Image size: " + img.getWidth() + "x" + img.getHeight());
+
+		 int tileWidth = 32;
+   		 int tileHeight = 32;
+
+		 int cols = img.getWidth() / tileWidth;
+		int rows = img.getHeight() / tileHeight;
+
+		levelSprite = new BufferedImage[60];
+		for (int j = 0; j < rows; j++)
+			for (int i = 0; i < cols; i++) {
+				int index = j * cols + i;
+				levelSprite[index] = img.getSubimage(i * tileWidth, j * tileHeight, tileWidth, tileHeight);
 			}
 	}
 
@@ -34,7 +42,7 @@ public class levelmaniger {
 			for (int i = 0; i < DisplayManager.TILES_IN_WIDTH; i++) {
 				int index = level.getSpriteIndex(i, j);
 				g.drawImage(levelSprite[index], DisplayManager.TILES_SIZE * i, DisplayManager.TILES_SIZE * j, DisplayManager.TILES_SIZE, DisplayManager.TILES_SIZE, null);
-				
+
 				g.setColor(Color.white);
 				g.drawString(String.valueOf(index), i * DisplayManager.TILES_SIZE + 10, j * DisplayManager.TILES_SIZE + 20);
 
