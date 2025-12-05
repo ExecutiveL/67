@@ -14,4 +14,5 @@ public class level {
     public int[][] getLevelData() {
     return levelData;
 }
+
 }

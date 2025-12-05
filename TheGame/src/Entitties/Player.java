@@ -6,34 +6,48 @@ import java.awt.image.BufferedImage;
 
 import Utils.LoadSave;
 
+import Utils.Checker;
+import Utils.DisplayManager;
+
 import static Utils.Constans.PlayerConstants.*;
 
 
 
 public class Player extends Entity {
+
     private BufferedImage[][] animations;
     private int animationIndex, animationTick, animationSpeed = 30;
     private int playerAction = IDLE;
     private boolean moving = false, jumping = false, attacking = false;
-   
+    private int[][] leveldata;
     private boolean left,right;
+
+    private float XdrawOffset = 22 * DisplayManager.SCALE;
+    private float YdrawOffset = 53 * DisplayManager.SCALE;
     
     public Player(float x, float y,int width, int height) {
         super(x, y,width,height);
         loadAnimations();
+       Hitbox(x, y, 20 * DisplayManager.SCALE, 32 * DisplayManager.SCALE);
+
     }
 
     public void update(double deltaTime) {
         updatePosition(deltaTime);
+       
         //OutofBounds();
         updateAnimation();
         setAnimation();
+
+       
         
         
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][animationIndex],(int)x, (int)y, width , height,null);
+        
+        g.drawImage(animations[playerAction][animationIndex], (int)(hitbox.x - XdrawOffset), (int)(hitbox.y - YdrawOffset), width , height,null);
+        DrawHitbox(g);
     }
 
     private void updateAnimation() {
@@ -68,15 +82,23 @@ public class Player extends Entity {
     }
 
     public void updatePosition(double deltaTime) {
-        int speed = 200;
+        float Xspeed = 0,Yspeed = 0;
+        int speed = 2;
+
+        moving = false;
+        if (!left && !right)
+            return;
         if(left && !right) {
-            x-= speed * deltaTime;
+            Xspeed = -speed;
+            
+        } else if (right && !left) 
+            Xspeed = speed;
+        
+        if(Checker.PositionVerification(hitbox.x+Xspeed, hitbox.y+Yspeed,hitbox.width,hitbox.height,leveldata)) {
+            hitbox.x += Xspeed;
+            hitbox.y += Yspeed;
+
             moving = true;
-        } else if (right && !left) {
-            x+= speed * deltaTime;
-            moving = true;
-        } else {
-            moving = false;
         }
         
     }
@@ -92,7 +114,7 @@ public class Player extends Entity {
     private void loadAnimations() {
 
             BufferedImage image = LoadSave.getSpriteAtlas(LoadSave.PLAYER_ATLAS);
-
+            System.out.println("width:"+ image.getWidth() + "Height:" + image.getHeight());
             animations = new BufferedImage[5][];
             for (int i = 0; i < animations.length; i++) {
                 int frameCount = GetSpriteAmount(i);
@@ -102,6 +124,10 @@ public class Player extends Entity {
                 }
             }
     }
+    public void loadleveldata(int[][] leveldata) {
+        this.leveldata = leveldata;
+    }
+    
    /*  public void OutofBounds() {
     if (x < 0) x = 0;
     if (x > DisplayManager.GameWidth - DisplayManager.PLAYER_WIDTH)

@@ -34,7 +34,7 @@ public class LoadSave {
 
 	public static int[][] GetLevelData() {
 	BufferedImage img = getSpriteAtlas(LEVEL_MAP);
-	System.out.println("width:"+ img.getWidth() + "Height:" + img.getHeight());
+	
     int[][] lvlData = new int[img.getHeight()][img.getWidth()];
 
     for (int j = 0; j < img.getHeight(); j++) {

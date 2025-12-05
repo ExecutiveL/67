@@ -52,5 +52,8 @@ public class levelmaniger {
 	public void update() {
 
 	}
+	public level getCurrentLevel() {
+		return level;
+	}
 
 }
