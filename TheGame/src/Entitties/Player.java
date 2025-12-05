@@ -5,13 +5,12 @@ import java.awt.image.BufferedImage;
 
 
 import Utils.LoadSave;
-import Utils.DisplayManager;
+
 import static Utils.Constans.PlayerConstants.*;
 
 
 
 public class Player extends Entity {
-
     private BufferedImage[][] animations;
     private int animationIndex, animationTick, animationSpeed = 30;
     private int playerAction = IDLE;
@@ -19,20 +18,22 @@ public class Player extends Entity {
    
     private boolean left,right;
     
-    public Player(float x, float y) {
-        super(x, y);
+    public Player(float x, float y,int width, int height) {
+        super(x, y,width,height);
         loadAnimations();
     }
 
     public void update(double deltaTime) {
         updatePosition(deltaTime);
+        //OutofBounds();
         updateAnimation();
         setAnimation();
+        
         
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][animationIndex],(int)x, (int)y,DisplayManager.scale(100),DisplayManager.scale(100),null);
+        g.drawImage(animations[playerAction][animationIndex],(int)x, (int)y, width , height,null);
     }
 
     private void updateAnimation() {
@@ -67,7 +68,7 @@ public class Player extends Entity {
     }
 
     public void updatePosition(double deltaTime) {
-        double speed = 500;
+        int speed = 200;
         if(left && !right) {
             x-= speed * deltaTime;
             moving = true;
@@ -101,6 +102,15 @@ public class Player extends Entity {
                 }
             }
     }
+   /*  public void OutofBounds() {
+    if (x < 0) x = 0;
+    if (x > DisplayManager.GameWidth - DisplayManager.PLAYER_WIDTH)
+        x = DisplayManager.GameWidth - DisplayManager.PLAYER_WIDTH;
+
+    if (y < 0) y = 0;
+    if (y > DisplayManager.GameHeight - DisplayManager.PLAYER_HEIGHT)
+        y = DisplayManager.GameHeight - DisplayManager.PLAYER_HEIGHT; */
+    
     public void resetDirBooleans() {
         left = false;
         right = false;

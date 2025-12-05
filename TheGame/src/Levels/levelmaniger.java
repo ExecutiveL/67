@@ -3,6 +3,7 @@ package Levels;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import Utils.DisplayManager;
 import Utils.LoadSave;
 import java.awt.Color;
 import main.Game;
@@ -10,20 +11,17 @@ import main.Game;
 
 
 public class levelmaniger {
-
-    private Game game;
     private BufferedImage[] levelSprite;
     private level level;
 
     public levelmaniger(Game game) {
-     this.game = game;
 		importOutsideSprites();
 		level = new level(LoadSave.GetLevelData());
 	}
 
 	private void importOutsideSprites() {
 		BufferedImage img = LoadSave.getSpriteAtlas(LoadSave.LEVEL_ATLAS);
-		levelSprite = new BufferedImage[48];
+		levelSprite = new BufferedImage[54];
 		for (int j = 0; j < 4; j++)
 			for (int i = 0; i < 12; i++) {
 				int index = j * 12 + i;
@@ -32,12 +30,13 @@ public class levelmaniger {
 	}
 
 	public void draw(Graphics g) {
-		for (int j = 0; j < Game.TILES_IN_HEIGHT; j++)
-			for (int i = 0; i < Game.TILES_IN_WIDTH; i++) {
+		for (int j = 0; j < DisplayManager.TILES_IN_HEIGHT; j++)
+			for (int i = 0; i < DisplayManager.TILES_IN_WIDTH; i++) {
 				int index = level.getSpriteIndex(i, j);
-				g.drawImage(levelSprite[index], Game.TILES_SIZE * i, Game.TILES_SIZE * j, Game.TILES_SIZE, Game.TILES_SIZE, null);
-				g.setColor(Color.BLACK);
-				g.drawString(String.valueOf(index), i * TILE_SIZE + 10, j * TILE_SIZE + 20);
+				g.drawImage(levelSprite[index], DisplayManager.TILES_SIZE * i, DisplayManager.TILES_SIZE * j, DisplayManager.TILES_SIZE, DisplayManager.TILES_SIZE, null);
+				
+				g.setColor(Color.white);
+				g.drawString(String.valueOf(index), i * DisplayManager.TILES_SIZE + 10, j * DisplayManager.TILES_SIZE + 20);
 
 			}
 	}

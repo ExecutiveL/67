@@ -30,7 +30,7 @@ public class Game implements Runnable {
         
     }
     private void initClasses() {
-        player = new Player(100,700);
+        player = new Player(200, 200, (int) (64 * DisplayManager.SCALE), (int) (70 * DisplayManager.SCALE));
         levelmaniger = new levelmaniger(this);
     }
     private void startGameLoop() {
@@ -48,11 +48,11 @@ public class Game implements Runnable {
     }
       
     public int getGameWidth() {
-        return DisplayManager.GameWidth;
+        return DisplayManager.GAME_WIDTH;
     }
 
     public int getGameHeight() {
-        return DisplayManager.GameHeight;
+        return DisplayManager.GAME_HEIGHT;
     }
     //Game loop
     @Override
