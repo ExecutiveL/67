@@ -44,7 +44,9 @@ public class Game implements Runnable {
             case PLAYING:
                 playing.Update();
                 break;
+            case QUIT:
             default:
+                System.exit(0);
                 break;
         }
         

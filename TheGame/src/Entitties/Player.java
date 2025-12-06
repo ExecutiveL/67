@@ -15,7 +15,7 @@ import static Utils.Constans.PlayerConstants.*;
 public class Player extends Entity {
 
     private BufferedImage[][] animations;
-    private int animationIndex, animationTick, animationSpeed = 20;
+    private int animationIndex, animationTick, animationSpeed = 30;
     private int playerAction = IDLE;
     private boolean moving = false, attacking = false;
     private int[][] leveldata;
