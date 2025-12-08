@@ -13,7 +13,7 @@ import main.Game;
 public class Menu extends State implements StateMethods {
     private BufferedImage background;
     private MenuButton[] buttons = new MenuButton[2];
-    private int backgroundwidth,backgroundheight;
+   
 
     public Menu(Game game) {
         super(game);
@@ -24,13 +24,11 @@ public class Menu extends State implements StateMethods {
 
     private void loadBackgrounds() {
        background = LoadSave.getSpriteAtlas(LoadSave.MENU_IMG);
-       backgroundwidth = background.getWidth();
-       backgroundheight = background.getHeight();
     }
 
     private void loadButtons() {
-       buttons[0] = new MenuButton(1300,350,0, gamestate.PLAYING);
-       buttons[1] = new MenuButton(1300,450,1, gamestate.QUIT);
+       buttons[0] = new MenuButton(1200,350,0, gamestate.PLAYING);
+       buttons[1] = new MenuButton(1200,450,1, gamestate.QUIT);
        
     }
 
@@ -45,7 +43,7 @@ public class Menu extends State implements StateMethods {
     @Override
     public void draw(Graphics g) {
 
-        g.drawImage(background, 0,0, 1664,896, null);
+        g.drawImage(background, 0,0, DisplayManager.GAME_WIDTH,DisplayManager.GAME_HEIGHT, null);
        for(MenuButton mb : buttons)
             mb.draw(g);
     }

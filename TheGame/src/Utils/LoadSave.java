@@ -11,7 +11,18 @@ public class LoadSave {
     public static final String LEVEL_ATLAS = "level1_tiles.png";
     public static final String LEVEL_MAP = "level1.png";
 	public static final String MENU_IMG = "menu_art.png";
-	 public static final String BUTTON_ATLAS = "Button.png";
+	public static final String BUTTON_ATLAS = "Button.png";
+	public static final String BACKGROUND_IMG = "Background.png";
+	public static final String MOUNTAINS = "Mountains.png";
+	public static final String GRASSBG = "GrassBG.png";
+	public static final String TreesAtfront = "treesFront.png";
+	public static final String TressAtBack = "tressBack.png";
+	public static final String CLOUD_1 = "cloud1.png";
+
+	public static final String ENEMY_1 = "enemy1.png";
+	public static final String ENEMY_2 = "enemy2.png";
+	
+	
 
     public static BufferedImage getSpriteAtlas(String fileName) {
        BufferedImage img = null;
@@ -35,6 +46,7 @@ public class LoadSave {
 	}
 
 	public static int[][] GetLevelData() {
+		
 	BufferedImage img = getSpriteAtlas(LEVEL_MAP);
 	
     int[][] lvlData = new int[img.getHeight()][img.getWidth()];

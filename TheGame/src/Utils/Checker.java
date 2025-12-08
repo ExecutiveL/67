@@ -16,7 +16,9 @@ public class Checker {
         return false;
     }
     private static boolean tileBlock(float x, float y, int[][]leveldata) {
-        if (x < 0 || x >= DisplayManager.GAME_WIDTH)
+        int maxWidth= leveldata[0].length * DisplayManager.TILES_SIZE;
+
+        if (x < 0 || x >=  maxWidth)
             return true;
         if (y < 0 || y >= DisplayManager.GAME_HEIGHT)
             return true;
@@ -62,7 +64,7 @@ public class Checker {
         }
     }
     public static boolean OnTheTile(Rectangle2D.Float hitbox, int[][] leveldata) {
-        if (!tileBlock(hitbox.x,hitbox.y + hitbox.height +1,leveldata)) {
+        if (!tileBlock(hitbox.x,hitbox.y + hitbox.height + 1,leveldata)) {
              if (!tileBlock(hitbox.x + hitbox.width,hitbox.y + hitbox.height + 1,leveldata)) {
                 return false;
              }

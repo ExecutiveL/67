@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 import Utils.DisplayManager;
 import Utils.LoadSave;
-import java.awt.Color;
+
 import main.Game;
 
 
@@ -37,14 +37,11 @@ public class levelmaniger {
 			}
 	}
 
-	public void draw(Graphics g) {
+	public void draw(Graphics g, int LvlOffset) {
 		for (int j = 0; j < DisplayManager.TILES_IN_HEIGHT; j++)
-			for (int i = 0; i < DisplayManager.TILES_IN_WIDTH; i++) {
+			for (int i = 0; i < level.getLevelData()[0].length; i++) {
 				int index = level.getSpriteIndex(i, j);
-				g.drawImage(levelSprite[index], DisplayManager.TILES_SIZE * i, DisplayManager.TILES_SIZE * j, DisplayManager.TILES_SIZE, DisplayManager.TILES_SIZE, null);
-
-				g.setColor(Color.BLACK);
-				g.drawString(String.valueOf(index), i * DisplayManager.TILES_SIZE + 10, j * DisplayManager.TILES_SIZE + 20);
+				g.drawImage(levelSprite[index], DisplayManager.TILES_SIZE * i - LvlOffset, DisplayManager.TILES_SIZE * j, DisplayManager.TILES_SIZE, DisplayManager.TILES_SIZE, null);
 
 			}
 	}
