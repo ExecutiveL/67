@@ -1,6 +1,8 @@
 package main;
 
 import Utils.DisplayManager;
+import Utils.LoadSave;
+
 import java.awt.Graphics;
 
 import GameStates.Menu;
@@ -20,6 +22,7 @@ public class Game implements Runnable {
     private Menu menu;
 
     public Game() {
+        LoadSave.GetAllLevels();
         initClasses();
 
         panel = new Panel(this);

@@ -25,7 +25,8 @@ public class Constans {
         public static final int JUMPING = 2;
         public static final int FALLING = 3;
         public static final int ATTACKING = 4;
-        public static final int DYING = 5;
+        public static final int HIT = 5;
+        public static final int DYING = 6;
 
         public static int GetSpriteAmount(int playerAction) {
             switch (playerAction) {

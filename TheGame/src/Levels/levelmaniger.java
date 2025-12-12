@@ -3,6 +3,8 @@ package Levels;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import java.util.ArrayList;
+
 import Utils.DisplayManager;
 import Utils.LoadSave;
 
@@ -12,11 +14,20 @@ import main.Game;
 
 public class levelmaniger {
     private BufferedImage[] levelSprite;
-    private level level;
+    private ArrayList<level> levels;
+	private int currentLevelIndex = 0;
 
     public levelmaniger(Game game) {
 		importOutsideSprites();
-		level = new level(LoadSave.GetLevelData());
+		levels = new ArrayList<>();
+		buildAllLevels();
+	}
+
+	private void buildAllLevels() {
+		BufferedImage[] allLevels = LoadSave.GetAllLevels();
+		for (BufferedImage img : allLevels) {
+			levels.add(new level(img));
+		}
 	}
 
 	private void importOutsideSprites() {
@@ -39,8 +50,8 @@ public class levelmaniger {
 
 	public void draw(Graphics g, int LvlOffset) {
 		for (int j = 0; j < DisplayManager.TILES_IN_HEIGHT; j++)
-			for (int i = 0; i < level.getLevelData()[0].length; i++) {
-				int index = level.getSpriteIndex(i, j);
+			for (int i = 0; i < levels.get(currentLevelIndex).getLevelData()[0].length; i++) {
+				int index = levels.get(currentLevelIndex).getSpriteIndex(i, j);
 				g.drawImage(levelSprite[index], DisplayManager.TILES_SIZE * i - LvlOffset, DisplayManager.TILES_SIZE * j, DisplayManager.TILES_SIZE, DisplayManager.TILES_SIZE, null);
 
 			}
@@ -50,7 +61,10 @@ public class levelmaniger {
 
 	}
 	public level getCurrentLevel() {
-		return level;
+		return levels.get(currentLevelIndex);
+	}
+	public int getNoLevels() {
+		return levels.size();
 	}
 
 }

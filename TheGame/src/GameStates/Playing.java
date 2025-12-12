@@ -21,9 +21,7 @@ public class Playing extends State implements StateMethods {
     private int xLvlOffset;
     private int leftBorder = (int) (0.2 * DisplayManager.GAME_WIDTH);
     private int RightBorder = (int) (0.8 * DisplayManager.GAME_WIDTH);
-    private int LvlTilesWide = LoadSave.GetLevelData()[0].length;
-    private int MaxTilesOffset = LvlTilesWide - DisplayManager.TILES_IN_WIDTH;
-    private int MaxLvlOffsetX = MaxTilesOffset * DisplayManager.TILES_SIZE;
+    private int MaxLvlOffsetX;
 
     private BufferedImage background,mountain,grass,cloud_1,treesF,treesB;
     private int[] smallcloudposition;
@@ -45,6 +43,18 @@ public class Playing extends State implements StateMethods {
         for(int i = 0; i < smallcloudposition.length;i++) {
             smallcloudposition[i] = (int)(90 * DisplayManager.SCALE) + rnd.nextInt((int)(10 * DisplayManager.SCALE));
         }
+
+        calcLvlOffset();
+        loadForestLevel();
+
+    }
+
+    private void loadForestLevel() {
+        
+    }
+
+    private void calcLvlOffset() {
+       MaxLvlOffsetX = levelmaniger.getCurrentLevel().getMaxLvlOffsetX();
 
     }
 

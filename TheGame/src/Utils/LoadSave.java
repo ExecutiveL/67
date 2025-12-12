@@ -1,15 +1,18 @@
 package Utils;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 import javax.imageio.ImageIO;
 
 public class LoadSave {
     public static final String PLAYER_ATLAS = "main_character.png";
     public static final String LEVEL_ATLAS = "level1_tiles.png";
-    public static final String LEVEL_MAP = "level1.png";
+
 	public static final String MENU_IMG = "menu_art.png";
 	public static final String BUTTON_ATLAS = "Button.png";
 	public static final String BACKGROUND_IMG = "Background.png";
@@ -26,7 +29,7 @@ public class LoadSave {
 
     public static BufferedImage getSpriteAtlas(String fileName) {
        BufferedImage img = null;
-		InputStream is = LoadSave.class.getResourceAsStream("/" + fileName);
+		InputStream is = LoadSave.class.getResourceAsStream("/Asset/" + fileName);
 		if (is == null) {
 			throw new IllegalArgumentException("Resource not found: " + fileName);
 		}
@@ -45,21 +48,39 @@ public class LoadSave {
 		return img;
 	}
 
-	public static int[][] GetLevelData() {
-		
-	BufferedImage img = getSpriteAtlas(LEVEL_MAP);
 	
-    int[][] lvlData = new int[img.getHeight()][img.getWidth()];
+	public static BufferedImage[] GetAllLevels() {
+		URL url = LoadSave.class.getResource("/Asset/lvls/");
+		File file = null;
+		
+		try {
+			file = new File(url.toURI());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
 
-    for (int j = 0; j < img.getHeight(); j++) {
-        for (int i = 0; i < img.getWidth(); i++) {
-            Color color = new Color(img.getRGB(i, j));
-            int value = color.getRed();
-            if (value >= 16) value = 0;
-            lvlData[j][i] = value;
+		File[] files = file.listFiles();
+		File[] sortedFiles = new File[files.length];
+
+
+
+		for (int i = 0; i < sortedFiles.length; i++) { 
+        for (int j = 0; j < files.length; j++) {
+            if (files[j].getName().equals("level_" + (i + 1) + ".png")) {
+                sortedFiles[i] = files[j];
+                break; 
+            }
         }
     }
-    return lvlData;
+		BufferedImage[] imgs = new BufferedImage[sortedFiles.length];
+		for (int i = 0; i < imgs.length; i++) {
+			try {
+				imgs[i] = ImageIO.read(sortedFiles[i]);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 }
 
