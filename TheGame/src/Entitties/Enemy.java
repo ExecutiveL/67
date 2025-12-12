@@ -6,7 +6,7 @@ import Entitties.Entity;
 
 public abstract class Enemy extends Entity {
 
-    private int animationIndex, enemyState, enemyType;
+    private int animationIndex, enemyState, enemyType,enemyAction;
     private int animationTick, animationSpeed = 30;
 
 
@@ -22,7 +22,7 @@ public abstract class Enemy extends Entity {
         if (animationTick >= animationSpeed) {
             animationTick = 0;
             animationIndex++;
-            if (animationIndex >=  GetSpriteAmount()) {
+            if (animationIndex >=  GetSpriteAmount(enemyAction)) {
                 animationIndex = 0;
             }
             

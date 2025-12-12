@@ -26,6 +26,8 @@ public class Player extends Entity {
     private float XdrawOffset = 6 * DisplayManager.SCALE;
     private float YdrawOffset = 7 * DisplayManager.SCALE;
 
+    private int flipX = 1;
+
     //talon
     private float AirSpeed =0f;
     private float Gravity = 0.05f * DisplayManager.SCALE;
@@ -53,7 +55,23 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g, int levelOffset) {
-        g.drawImage(animations[playerAction][animationIndex], (int)(hitbox.x - XdrawOffset) - levelOffset, (int)(hitbox.y - YdrawOffset), width , height,null);
+
+        int xDest= (int)(hitbox.x - XdrawOffset) - levelOffset;
+        int yDest= (int)(hitbox.y - YdrawOffset);
+
+        BufferedImage animation = animations[playerAction][animationIndex];
+
+        int destX1 =xDest;
+        int destX2 = xDest + width;
+
+        if (flipX == -1) {
+            destX1 = xDest + width;
+            destX2 = xDest;
+        }
+
+        
+
+        g.drawImage(animation, destX1, yDest, destX2, yDest + height, 0,0 , animation.getWidth(),animation.getHeight(), null);
         DrawHitbox(g);
     }
 
@@ -108,8 +126,10 @@ public class Player extends Entity {
             Xspeed = 0f;
        } else if (left && !right) {
             Xspeed = -playerSpeed;
+            flipX = -1;
        } else if (!left && right) {
             Xspeed = playerSpeed;
+            flipX = 1;
        } else {
         Xspeed = 0f;
        }
