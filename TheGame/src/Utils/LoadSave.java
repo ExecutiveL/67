@@ -47,7 +47,7 @@ public class LoadSave {
     public static BufferedImage getSpriteAtlas(String fileName) {
     BufferedImage img = null;
     
-    // Open the resource stream using Try-With-Resources
+    
     try (InputStream is = LoadSave.class.getResourceAsStream("/asset/" + fileName)) {
         
         if (is == null) {
