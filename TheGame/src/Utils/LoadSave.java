@@ -35,6 +35,7 @@ public class LoadSave {
 
 
 	public static final String LEVEL_1 = "level_1.png";
+	public static final String HealthBar = "healthBar.png";
 	//City Stage
 	public static final String CITYBACKGROUND_IMG = "CityBg.png";
 	public static final String CITY_1 = "City1.png";

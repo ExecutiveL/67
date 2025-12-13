@@ -1,16 +1,17 @@
 package Entitties;
 
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import GameStates.Playing;
 import Utils.LoadSave;
+
+
 import static Utils.Constans.EnemyConstants.*;
 
 public class EnemyManager {
-
-    private Playing playing;
 
     private BufferedImage[][] Enemy1Arr;
 
@@ -18,54 +19,48 @@ public class EnemyManager {
 
     public EnemyManager(Playing playing) {
 
-        this.playing = playing;
-
         LoadEnemy();
 
         AddEnemies();
 
     }
-
     private void AddEnemies() {
-
         Enemy1s = LoadSave.getEnemySprite();
 
     }
-
-    public void update(int[][] levelData) {
+    public void update(int[][] levelData,Player player) {
 
         for (Enemy1 c : Enemy1s)
-
-            c.Update(levelData);
+            if (c.isActive())
+            c.Update(levelData, player);
 
     }
 
     public void draw(Graphics g, int xLvlOffset) {
-
         drawEnemy1(g, xLvlOffset);
         
-
     }
 
     private void drawEnemy1(Graphics g, int xLvlOffset) {
 
         for (Enemy1 c : Enemy1s) {
+            if (c.isActive()) {
             int flipVal = c.getFlipX();
             int drawX = (int) c.getHitbox().x - xLvlOffset;
             int drawW = Enemy1_width * flipVal;
 
-            if (flipVal == -1) {
-            drawX += Enemy1_width;
-        }
+                if (flipVal == -1) 
+                drawX += Enemy1_width;
 
-            g.drawImage(Enemy1Arr[c.getEnemyState()][c.getAnimationIndex()], drawX,
+             g.drawImage(Enemy1Arr[c.getEnemyState()][c.getAnimationIndex()], drawX,
                     (int) c.getHitbox().y, drawW, Enemy1_height, null);
 
-            c.DrawHitbox(g, xLvlOffset);
-
+            //c.DrawHitbox(g, xLvlOffset);
+            c.DrawAttackBox(g, xLvlOffset);
+            }
         }
-
     }
+      
 
     public void LoadEnemy() {
 
@@ -81,6 +76,16 @@ public class EnemyManager {
                         Enemy1_width_default, Enemy1_height_default);
 
             }
+
+    }
+    public void checkEnemyHit(Rectangle2D.Float attackBox) {
+        for(Enemy1 e: Enemy1s) 
+            if (attackBox.intersects(e.getHitbox())) {
+                e.Hurt(10);
+                return;
+
+            }
+
 
     }
 

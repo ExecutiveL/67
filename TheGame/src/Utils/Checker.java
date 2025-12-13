@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+
+
 public class Checker {
 
     public static boolean PositionVerification(float x, float y, float width, float height, int[][] leveldata) {
@@ -35,21 +37,20 @@ public class Checker {
             return true;
 
         float xIndex = x / DisplayManager.TILES_SIZE;
-
         float YIndex = y / DisplayManager.TILES_SIZE;
 
-        int value = leveldata[(int) YIndex][(int) xIndex];
+        return isTileBlock((int) xIndex, (int) YIndex, leveldata);
 
-        if (value >= 16 || value < 0 || value != 0) {
+    }
+    private static boolean isTileBlock (int Xtile, int Ytile, int[][] leveldata) {
+        int value = leveldata[Ytile][Xtile];
 
+         if (value >= 16 || value < 0 || value != 0) {
             return true;
-
         } else {
-
             return false;
 
         }
-
     }
 
     public static float CloserToWall(Rectangle2D.Float hitbox, float Xspeed) {
@@ -108,7 +109,29 @@ public class Checker {
 
     }
 
-    public static int[][] GetLevelData(BufferedImage img) {
+  public static boolean IsFloor(Rectangle2D.Float hitbox, float xSpeed, int[][] lvlData) {
+		return tileBlock(hitbox.x + xSpeed, hitbox.y + hitbox.height + 1, lvlData);
+	}
+    public static boolean IsAllTilesWalkable(int xStart, int xEnd, int y, int[][] lvlData) {
+		for (int i = 0; i < xEnd - xStart; i++) {
+			if (isTileBlock(xStart + i, y, lvlData))
+				return false;
+			if (!isTileBlock(xStart + i, y + 1, lvlData))
+				return false;
+		}
+		return true;
+	}
+    public static boolean IsSightClear(int[][] lvlData, Rectangle2D.Float firstHitbox, Rectangle2D.Float secondHitbox, int yTile) {
+		int firstXTile = (int) (firstHitbox.x / DisplayManager.TILES_SIZE);
+		int secondXTile = (int) (secondHitbox.x / DisplayManager.TILES_SIZE);
+
+		if (firstXTile > secondXTile)
+			return IsAllTilesWalkable(secondXTile, firstXTile, yTile, lvlData);
+		else
+			return IsAllTilesWalkable(firstXTile, secondXTile, yTile, lvlData);
+
+	}
+     public static int[][] GetLevelData(BufferedImage img) {
 
         int[][] lvlData = new int[img.getHeight()][img.getWidth()];
 
@@ -133,9 +156,5 @@ public class Checker {
 
     }
 
-    public static boolean isFloor(Rectangle2D.Float hitbox, float Xspeed, int[][] levelData) {
-
-        return tileBlock(hitbox.x + Xspeed, hitbox.y + hitbox.height + 1, levelData);
-
-    }
 }
+

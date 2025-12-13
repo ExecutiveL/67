@@ -1,5 +1,7 @@
 package Utils;
 
+
+
 public class Constans {
 
 
@@ -63,7 +65,7 @@ public class Constans {
         public static final int Enemy1_height = (int) (Enemy1_height_default * DisplayManager.SCALE);
 
         public static final int ENEMY1_OFFSET_X = (int)(26*DisplayManager.SCALE);
-        public static final int ENEMY1_OFFSET_Y = (int)(9*DisplayManager.SCALE);
+        public static final int ENEMY1_OFFSET_Y = (int)(7*DisplayManager.SCALE);
 
         public static int GetSpriteAmount(int EnemyType, int EnemyState) {
             switch (EnemyType) {
@@ -79,16 +81,31 @@ public class Constans {
                             return 4;
                         case DEAD:
                             return 4;
-                        default:
-                            return 0;
                     }
+               
+                    return 0;
+            }
+            return 0;
+        }
+
+        public static int GetMaxHealth(int enemy_type) {
+            switch (enemy_type) {
+                case ENEMY1:
+                    return 25;
+                default:
+                    return 1;
+            }
+        }
+        public static int GetEnemyDamage(int enemy_type) {
+            switch (enemy_type) {
+                case ENEMY1:
+                    return 25;
                 default:
                     return 0;
             }
 
         }
-
-        
+    
     }
     public static class Environment {
         public static final int mountainwidth = 1024;

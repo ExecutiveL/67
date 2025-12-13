@@ -1,5 +1,6 @@
 package Entitties;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -34,15 +35,33 @@ public class Player extends Entity {
     private float JumpSpeed = -2.25f * DisplayManager.SCALE;
     private float FallSpeed = 0.5f * DisplayManager.SCALE;
     private boolean AtAir = false;
+
+    //
+    private BufferedImage StatusBar;
+
+    private int StatusBarWidth = (int)(190 * DisplayManager.SCALE);
+    private int StatusBarHeight = (int)(58 * DisplayManager.SCALE);
+    private int StatusBarX = (int)(10 * DisplayManager.SCALE);
+    private int StatusBarY = (int)(10 * DisplayManager.SCALE);
+
+    private int HealthBarWidth = (int)(150 * DisplayManager.SCALE);
+    private int HealthBarHeight = (int)(4 * DisplayManager.SCALE);
+    private int HealthBarStartX = (int)(34 * DisplayManager.SCALE);
+    private int HealthBarStartY = (int)(14 * DisplayManager.SCALE);
+
+    private int MaxHealth = 100;
+    private int CurrentHealth = MaxHealth;
+    private int healthWidth = HealthBarWidth;
     
     public Player(float x, float y,int width, int height) {
         super(x, y,width,height);
         loadAnimations();
-        Hitbox(x, y, 22 * DisplayManager.SCALE, 21 * DisplayManager.SCALE);
+        Hitbox(x, y, 22 * DisplayManager.SCALE, 19 * DisplayManager.SCALE);
 
     }
 
     public void update() {
+        updateHealthBar();
         updatePosition();
        
         //OutofBounds();
@@ -52,6 +71,11 @@ public class Player extends Entity {
        
         
         
+    }
+
+    private void updateHealthBar() {
+       healthWidth = (int) ((CurrentHealth / (float)MaxHealth) * HealthBarWidth);
+
     }
 
     public void render(Graphics g, int levelOffset) {
@@ -71,6 +95,13 @@ public class Player extends Entity {
 
         g.drawImage(animation, destX1, yDest, destX2, yDest + height, 0,0 , animation.getWidth(),animation.getHeight(), null);
         DrawHitbox(g, levelOffset);
+        DrawStatusBar(g);
+    }
+
+    private void DrawStatusBar(Graphics g) {
+        g.drawImage(StatusBar, StatusBarX,StatusBarY,StatusBarWidth,StatusBarHeight,null);
+        g.setColor(Color.RED);
+        g.fillRect(HealthBarStartX + StatusBarX, HealthBarStartY + StatusBarY, healthWidth, HealthBarHeight);
     }
 
     private void updateAnimation() {
@@ -185,10 +216,9 @@ public class Player extends Entity {
     }
 
     private void loadAnimations() {
-
             BufferedImage image = LoadSave.getSpriteAtlas(LoadSave.PLAYER_ATLAS);
-            System.out.println("width:"+ image.getWidth() + "Height:" + image.getHeight());
             animations = new BufferedImage[5][];
+
             for (int i = 0; i < animations.length; i++) {
                 int frameCount = GetSpriteAmount(i);
                 animations[i] = new BufferedImage[frameCount];
@@ -196,11 +226,21 @@ public class Player extends Entity {
                     animations[i][j] = image.getSubimage(j * 32, i * 32, 32, 32);
                 }
             }
+            StatusBar = LoadSave.getSpriteAtlas(LoadSave.HealthBar);
+
     }
     public void loadleveldata(int[][] leveldata) {
         this.leveldata = leveldata;
         if(!Checker.OnTheTile(hitbox, leveldata)) {
             AtAir = true;
+        }
+    }
+    public void ChangeHealth(int value) {
+        CurrentHealth += value;
+        if (CurrentHealth <= 0) {
+            CurrentHealth = 0;
+        } else if (CurrentHealth >= MaxHealth) {
+            CurrentHealth = MaxHealth;
         }
     }
     

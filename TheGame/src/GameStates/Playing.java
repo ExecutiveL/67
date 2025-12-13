@@ -81,7 +81,7 @@ public class Playing extends State implements StateMethods {
     public void Update() {
         levelmaniger.update();
         player.update();
-        enemyManager.update(levelmaniger.getCurrentLevel().getLevelData());
+        enemyManager.update(levelmaniger.getCurrentLevel().getLevelData(),player);
 
         CheckBorder();
 
@@ -113,7 +113,6 @@ public class Playing extends State implements StateMethods {
         player.render(g,xLvlOffset);
         enemyManager.draw(g,xLvlOffset);
 
-
     }
 
     private void drawBG(Graphics g) {
@@ -128,6 +127,9 @@ public class Playing extends State implements StateMethods {
         g.drawImage(cloud_1, Final_1cloudWidth * 4 * i - (int)(xLvlOffset * 0.7), smallcloudposition[i], Final_1cloudWidth, Final_1cloudHeight, null);
     }
        }
+    public void resetAll() {
+
+    }
        
 
     @Override
