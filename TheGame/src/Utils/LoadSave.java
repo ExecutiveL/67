@@ -1,13 +1,20 @@
 package Utils;
 
+import static Utils.Constans.EnemyConstants.ENEMY1;
+
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+
 
 import javax.imageio.ImageIO;
+
+import Entitties.Enemy1;
 
 public class LoadSave {
     public static final String PLAYER_ATLAS = "main_character.png";
@@ -15,6 +22,7 @@ public class LoadSave {
 
 	public static final String MENU_IMG = "menu_art.png";
 	public static final String BUTTON_ATLAS = "Button.png";
+	//Forest Stage
 	public static final String BACKGROUND_IMG = "Background.png";
 	public static final String MOUNTAINS = "Mountains.png";
 	public static final String GRASSBG = "GrassBG.png";
@@ -24,33 +32,55 @@ public class LoadSave {
 
 	public static final String ENEMY_1 = "enemy1.png";
 	public static final String ENEMY_2 = "enemy2.png";
-	
+
+
+	public static final String LEVEL_1 = "level_1.png";
+	//City Stage
+	public static final String CITYBACKGROUND_IMG = "CityBg.png";
+	public static final String CITY_1 = "City1.png";
+	public static final String CITY_2 = "City2.png";
+	public static final String CITY_3 = "City3.png";
+	public static final String CITY_4 = "City4.png";
 	
 
     public static BufferedImage getSpriteAtlas(String fileName) {
-       BufferedImage img = null;
-		InputStream is = LoadSave.class.getResourceAsStream("/Asset/" + fileName);
-		if (is == null) {
-			throw new IllegalArgumentException("Resource not found: " + fileName);
-		}
-		try {
-			img = ImageIO.read(is);
+    BufferedImage img = null;
+    
+    // Open the resource stream using Try-With-Resources
+    try (InputStream is = LoadSave.class.getResourceAsStream("/asset/" + fileName)) {
+        
+        if (is == null) {
+            System.err.println("Failed to load resource: /asset/" + fileName);
+            
+            return null; 
+        }
+        img = ImageIO.read(is); 
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				is.close();
-			} catch (IOException e) {
-				e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return img;
+}
+	public static ArrayList<Enemy1> getEnemySprite() {
+		BufferedImage img = getSpriteAtlas(LEVEL_1);
+		ArrayList<Enemy1> list = new ArrayList<>();
+		
+
+		for(int j = 0; j < img.getHeight();j++)
+			for(int i =0; i < img.getWidth();i++) {
+				Color color = new Color(img.getRGB(i,j));
+           	
+				int value = color.getGreen();
+				if (value == ENEMY1) {
+					list.add(new Enemy1(i * DisplayManager.TILES_SIZE, j * DisplayManager.TILES_SIZE));
+				}
 			}
-		}
-		return img;
+			return list;
 	}
 
 	
 	public static BufferedImage[] GetAllLevels() {
-		URL url = LoadSave.class.getResource("/Asset/lvls/");
+		URL url = LoadSave.class.getResource("/asset/lvls/");
 		File file = null;
 		
 		try {
@@ -80,7 +110,8 @@ public class LoadSave {
 				e.printStackTrace();
 			}
 		}
-		return null;
+		return imgs;
 	}
+	
 }
 

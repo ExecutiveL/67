@@ -70,7 +70,7 @@ public class Player extends Entity {
         }
 
         g.drawImage(animation, destX1, yDest, destX2, yDest + height, 0,0 , animation.getWidth(),animation.getHeight(), null);
-        DrawHitbox(g);
+        DrawHitbox(g, levelOffset);
     }
 
     private void updateAnimation() {

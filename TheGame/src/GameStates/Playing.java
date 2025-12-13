@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import Entitties.EnemyManager;
 import Entitties.Player;
 import Levels.levelmaniger;
 import static Utils.Constans.Environment.*;
@@ -17,10 +18,12 @@ public class Playing extends State implements StateMethods {
 
     private Player player;
     private levelmaniger levelmaniger;
+    private EnemyManager enemyManager;
 
     private int xLvlOffset;
     private int leftBorder = (int) (0.2 * DisplayManager.GAME_WIDTH);
     private int RightBorder = (int) (0.8 * DisplayManager.GAME_WIDTH);
+    
     private int MaxLvlOffsetX;
 
     private BufferedImage background,mountain,grass,cloud_1,treesF,treesB;
@@ -60,8 +63,9 @@ public class Playing extends State implements StateMethods {
 
     private void initClasses() {
         levelmaniger = new levelmaniger(game);
+        enemyManager = new EnemyManager(this);
         player = new Player(100, 100, (int) (36 * DisplayManager.SCALE), (int) (40 * DisplayManager.SCALE));
-        player.loadleveldata(levelmaniger.getCurrentLevel().getLevelData());
+       player.loadleveldata(levelmaniger.getCurrentLevel().getLevelData());
 
     }
 
@@ -77,6 +81,7 @@ public class Playing extends State implements StateMethods {
     public void Update() {
         levelmaniger.update();
         player.update();
+        enemyManager.update(levelmaniger.getCurrentLevel().getLevelData());
 
         CheckBorder();
 
@@ -106,6 +111,7 @@ public class Playing extends State implements StateMethods {
 
         levelmaniger.draw(g,xLvlOffset);
         player.render(g,xLvlOffset);
+        enemyManager.draw(g,xLvlOffset);
 
 
     }

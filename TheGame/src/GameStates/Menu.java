@@ -93,7 +93,6 @@ public class Menu extends State implements StateMethods {
           for(MenuButton mb : buttons)
             if(Inside(e,mb)) {
                 mb.SetMouseOver(true);
-                System.out.println("Hovering over: " + mb.getBounds());
                 break;
             }
        

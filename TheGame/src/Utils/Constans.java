@@ -47,6 +47,49 @@ public class Constans {
             }
         }
     }
+    public static class EnemyConstants {
+        public static final int ENEMY1 = 255;
+
+        public static final int IDLE = 0;
+        public static final int WALKING = 1;
+        public static final int ATTACK = 2;
+        public static final int HIT = 3;
+        public static final int DEAD = 4;
+
+        public static final int Enemy1_width_default = 32;
+        public static final int Enemy1_height_default = 32;
+
+        public static final int Enemy1_width = (int) (Enemy1_width_default * DisplayManager.SCALE);
+        public static final int Enemy1_height = (int) (Enemy1_height_default * DisplayManager.SCALE);
+
+        public static final int ENEMY1_OFFSET_X = (int)(26*DisplayManager.SCALE);
+        public static final int ENEMY1_OFFSET_Y = (int)(9*DisplayManager.SCALE);
+
+        public static int GetSpriteAmount(int EnemyType, int EnemyState) {
+            switch (EnemyType) {
+                case ENEMY1:
+                    switch (EnemyState) {
+                        case IDLE:
+                            return 4;
+                        case WALKING:
+                            return 4;
+                        case ATTACK:
+                            return 4;
+                        case HIT:
+                            return 4;
+                        case DEAD:
+                            return 4;
+                        default:
+                            return 0;
+                    }
+                default:
+                    return 0;
+            }
+
+        }
+
+        
+    }
     public static class Environment {
         public static final int mountainwidth = 1024;
         public static final int mountainheight = 346;
@@ -63,6 +106,14 @@ public class Constans {
 
         public static final int Final_1cloudWidth = (int)(cloud_1Width * 5);
         public static final int Final_1cloudHeight = (int)(cloud_1Height * 5);
+
+        public static final int CityWidth = 576;
+        public static final int CityHeight = 324;
+
+        public static final int FinalCityWidth = (int)(CityWidth * DisplayManager.SCALE);
+        public static final int FinalCityHeight = (int)(CityHeight * DisplayManager.SCALE);
+
+
         
         
     }

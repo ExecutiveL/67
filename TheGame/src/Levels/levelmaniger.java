@@ -10,8 +10,6 @@ import Utils.LoadSave;
 
 import main.Game;
 
-
-
 public class levelmaniger {
     private BufferedImage[] levelSprite;
     private ArrayList<level> levels;
@@ -25,9 +23,24 @@ public class levelmaniger {
 
 	private void buildAllLevels() {
 		BufferedImage[] allLevels = LoadSave.GetAllLevels();
-		for (BufferedImage img : allLevels) {
-			levels.add(new level(img));
-		}
+	
+    if (allLevels == null) {
+        System.err.println("Failed to load level images!");
+        return; 
+    }
+    
+    for (BufferedImage img : allLevels) { 
+        levels.add(new level(img));
+    }
+	}
+	public void loadNextLevel() {
+        currentLevelIndex++;
+        
+        // Check if we have run out of levels
+        if (currentLevelIndex >= levels.size()) {
+            System.out.println("All levels complete! Returning to the first level.");
+            currentLevelIndex = 0; 
+        }
 	}
 
 	private void importOutsideSprites() {

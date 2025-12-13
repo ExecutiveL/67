@@ -11,7 +11,7 @@ public class level {
     private BufferedImage image;
     private int[][] levelData;
 
-     private int LvlTilesWide;
+    private int LvlTilesWide;
     private int MaxTilesOffset;
     private int MaxLvlOffsetX;
 
@@ -24,7 +24,7 @@ public class level {
     private void calcOffsets() {
         LvlTilesWide = image.getWidth();
         MaxTilesOffset = LvlTilesWide - DisplayManager.TILES_IN_WIDTH;
-        MaxLvlOffsetX = DisplayManager.TILES_SIZE;
+        MaxLvlOffsetX = DisplayManager.TILES_SIZE * MaxTilesOffset;
        
     }
        
