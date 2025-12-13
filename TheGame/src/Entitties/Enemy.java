@@ -150,7 +150,8 @@ public abstract class Enemy extends Entity {
     }
     protected void checkPlayerHit(Rectangle2D.Float attackBox, Player player) {
         if(attackBox.intersects(player.hitbox)) {
-            player.ChangeHealth(GetEnemyDamage(enemyType));
+            player.ChangeHealth(-GetEnemyDamage(enemyType));
+            
         }
         AttackChecked = true;
 

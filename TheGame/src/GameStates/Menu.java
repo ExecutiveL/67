@@ -76,7 +76,6 @@ public class Menu extends State implements StateMethods {
             }
          }
          resetButtons();
-       
     }
 
     private void resetButtons() {

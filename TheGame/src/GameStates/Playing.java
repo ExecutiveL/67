@@ -3,22 +3,29 @@ package GameStates;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import Entitties.EnemyManager;
 import Entitties.Player;
 import Levels.levelmaniger;
+import Managers.ProjectileManager;
+import Ui.GameOver;
+
 import static Utils.Constans.Environment.*;
+
+import Utils.Checker;
 import Utils.DisplayManager;
 import Utils.LoadSave;
 import main.Game;
 
 public class Playing extends State implements StateMethods {
-
+    private GameOver gameOverOverlay;
     private Player player;
     private levelmaniger levelmaniger;
     private EnemyManager enemyManager;
+    private ProjectileManager projectileManager;
 
     private int xLvlOffset;
     private int leftBorder = (int) (0.2 * DisplayManager.GAME_WIDTH);
@@ -30,9 +37,16 @@ public class Playing extends State implements StateMethods {
     private int[] smallcloudposition;
     private Random rnd = new Random();
 
+    private boolean gameOver;
+    private Rectangle2D.Float hitbox;
+
     public Playing(Game game) {
         super(game);
         initClasses();
+
+        this.gameOverOverlay = new GameOver(this);
+        gameOverOverlay = new GameOver(this);
+        
 
         background = LoadSave.getSpriteAtlas(LoadSave.BACKGROUND_IMG);
         mountain = LoadSave.getSpriteAtlas(LoadSave.MOUNTAINS);
@@ -41,6 +55,7 @@ public class Playing extends State implements StateMethods {
         treesB = LoadSave.getSpriteAtlas(LoadSave.TressAtBack);
 
         cloud_1 =LoadSave.getSpriteAtlas(LoadSave.CLOUD_1);
+        
         smallcloudposition = new int[8];
 
         for(int i = 0; i < smallcloudposition.length;i++) {
@@ -49,7 +64,7 @@ public class Playing extends State implements StateMethods {
 
         calcLvlOffset();
         loadForestLevel();
-
+        
     }
 
     private void loadForestLevel() {
@@ -64,7 +79,8 @@ public class Playing extends State implements StateMethods {
     private void initClasses() {
         levelmaniger = new levelmaniger(game);
         enemyManager = new EnemyManager(this);
-        player = new Player(100, 100, (int) (36 * DisplayManager.SCALE), (int) (40 * DisplayManager.SCALE));
+        projectileManager = new ProjectileManager(this);
+        player = new Player(100, 100, (int) (36 * DisplayManager.SCALE), (int) (40 * DisplayManager.SCALE), this);
        player.loadleveldata(levelmaniger.getCurrentLevel().getLevelData());
 
     }
@@ -82,8 +98,14 @@ public class Playing extends State implements StateMethods {
         levelmaniger.update();
         player.update();
         enemyManager.update(levelmaniger.getCurrentLevel().getLevelData(),player);
+        projectileManager.update();
 
         CheckBorder();
+
+        if (player.isDead()) {
+            gamestate.state = gamestate.GAMEOVER;
+            
+        }
 
     }
 
@@ -113,10 +135,16 @@ public class Playing extends State implements StateMethods {
         player.render(g,xLvlOffset);
         enemyManager.draw(g,xLvlOffset);
 
+        projectileManager.draw(g, xLvlOffset);
+
+        if (gameOver) {
+            gameOverOverlay.draw(g);
+        }
+
     }
 
     private void drawBG(Graphics g) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             g.drawImage(mountain,i *mountainwidth - (int)(xLvlOffset * 0.3), (int)( 150 * DisplayManager.SCALE), mountainwidth, mountainheight,null);
             g.drawImage(grass,i * grasswidth - (int)(xLvlOffset * 0.4), (int)( 175 * DisplayManager.SCALE), grasswidth, grassheight,null);
             g.drawImage(treesB,i * grasswidth - (int)(xLvlOffset * 0.5), (int)( 200 * DisplayManager.SCALE), grasswidth, grassheight,null);
@@ -130,12 +158,18 @@ public class Playing extends State implements StateMethods {
     public void resetAll() {
 
     }
-       
+    public boolean isProjectileHittingLevel(Rectangle2D.Float hitbox) {
+    return Checker.IsProjectileHittingWall(
+        hitbox, 
+        levelmaniger.getCurrentLevel().getLevelData()
+    );}
+   
 
     @Override
     public void MouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1){
             player.setAttacking(true);
+            player.shoot();
             System.out.println("[LEFT CLICK] Attack");
     }
     }
@@ -161,30 +195,25 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void KeyPressed(KeyEvent e) {
-          int key = e.getKeyCode();
-
-               if (key == KeyEvent.VK_A) {
-                   player.setLeft(true);
-                   System.out.println("[A] Left");
-               } else if (key == KeyEvent.VK_D) {
-                   player.setRight(true);
-                   System.out.println("[D] Right");
-               }
-               if (key == KeyEvent.VK_SPACE) {
-                   player.setJumping(true);
-                   System.out.println("[SPACE] Jump");
-               }
-               if (key == KeyEvent.VK_ESCAPE) {
-                    gamestate.state = gamestate.MENU;
-               }
-
+        if (gameOver)
+            gameOverOverlay.KeyPressed(e);
+        else
+            switch (e.getKeyCode()) {
+             case KeyEvent.VK_A:
+                player.setLeft(true);
+                break;
+             case KeyEvent.VK_D:
+                player.setRight(true);
+                break;
+             case KeyEvent.VK_SPACE:
+                player.setJumping(true);
+                break;}
+           
     }
 
     @Override
     public void KeyReleased(KeyEvent e) {
-
         int key = e.getKeyCode();
-
         if (key == KeyEvent.VK_A) {
             player.setLeft(false);
         } else if (key == KeyEvent.VK_D) {
@@ -196,5 +225,19 @@ public class Playing extends State implements StateMethods {
         }
 
     }
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+    public ProjectileManager getProjectileManager() {
+    return projectileManager;
+}
+
+    public levelmaniger getLevelmaniger() {
+    return levelmaniger;
+}
+public EnemyManager getEnemyManager() {
+    return enemyManager;
+}
+
 
 }

@@ -155,6 +155,33 @@ public class Checker {
         return lvlData;
 
     }
+    public static boolean IsProjectileHittingWall(Rectangle2D.Float hitbox, int[][] leveldata) {
+    
+    float x = hitbox.x;
+    float y = hitbox.y;
+    float width = hitbox.width;
+    float height = hitbox.height;
+
+    // Check four key points: Top-Left, Top-Right, Bottom-Left, Bottom-Right
+    
+    // Top-Left Corner
+    if (tileBlock(x, y, leveldata))
+        return true;
+    
+    // Top-Right Corner
+    if (tileBlock(x + width, y, leveldata))
+        return true;
+        
+    // Bottom-Left Corner
+    if (tileBlock(x, y + height, leveldata))
+        return true;
+        
+    // Bottom-Right Corner
+    if (tileBlock(x + width, y + height, leveldata))
+        return true;
+
+    return false;
+}
 
 }
 

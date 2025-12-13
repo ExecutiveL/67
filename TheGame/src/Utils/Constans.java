@@ -42,8 +42,10 @@ public class Constans {
                     return 3;
                 case ATTACKING:
                     return 4;
+                case HIT:
+                    return 1;
                 case DYING:
-                    return 8;
+                    return 7;
                 default:
                     return 1;
             }
@@ -67,32 +69,70 @@ public class Constans {
         public static final int ENEMY1_OFFSET_X = (int)(26*DisplayManager.SCALE);
         public static final int ENEMY1_OFFSET_Y = (int)(7*DisplayManager.SCALE);
 
+        //
+        public static final int ENEMY2 = 250;
+
+        public static final int ENEMY2_IDLE = 0;
+        public static final int ENEMY2_WALKING = 1;
+        public static final int ENEMY2_ATTACK = 2;
+        public static final int ENEMY2_HIT = 3;
+        public static final int ENEMY2_DEAD = 4;
+
+        public static final int Enemy2_width_default = 32;
+        public static final int Enemy2_height_default = 32;
+
+        public static final int Enemy2_width = (int) (Enemy1_width_default * DisplayManager.SCALE);
+        public static final int Enemy2_height = (int) (Enemy1_height_default * DisplayManager.SCALE);
+
+        public static final int ENEMY2_OFFSET_X = (int)(26*DisplayManager.SCALE);
+        public static final int ENEMY2_OFFSET_Y = (int)(7*DisplayManager.SCALE);
+
+
         public static int GetSpriteAmount(int EnemyType, int EnemyState) {
             switch (EnemyType) {
-                case ENEMY1:
-                    switch (EnemyState) {
-                        case IDLE:
-                            return 4;
-                        case WALKING:
-                            return 4;
-                        case ATTACK:
-                            return 4;
-                        case HIT:
-                            return 4;
-                        case DEAD:
-                            return 4;
-                    }
-               
-                    return 0;
+        case ENEMY1:
+            switch (EnemyState) {
+                case IDLE:
+                    return 4;
+                case WALKING:
+                    return 4;
+                case ATTACK:
+                    return 4;
+                case HIT:
+                    return 4;
+                case DEAD:
+                    return 4;
+                default:
+                    return 0; 
             }
+            
+        case ENEMY2:
+            switch (EnemyState) {
+                case IDLE:
+                    return 4;
+                case WALKING:
+                    return 4;
+                case ATTACK:
+                    return 4;
+                case HIT:
+                    return 4;
+                case DEAD:
+                    return 4;
+                default:
+                    return 0; 
+            }
+            
+        default:
             return 0;
-        }
-
+    }
+}
         public static int GetMaxHealth(int enemy_type) {
             switch (enemy_type) {
                 case ENEMY1:
                     return 25;
-                default:
+                case ENEMY2:
+                    return 25;
+                 default:
                     return 1;
             }
         }
@@ -100,8 +140,10 @@ public class Constans {
             switch (enemy_type) {
                 case ENEMY1:
                     return 25;
+                case ENEMY2:
+                    return 25;
                 default:
-                    return 0;
+                    return 1;
             }
 
         }
@@ -133,6 +175,14 @@ public class Constans {
 
         
         
+    }
+    public class Projectiles {
+        public static final int Bullet_defaul_Width = 8;
+        public static final int Bullet_defaul_Height = 8;
+        
+        public static final int BulletWidth = (int)(Bullet_defaul_Width  *  DisplayManager.SCALE);
+        public static final int BulletHeight = (int)(Bullet_defaul_Height *  DisplayManager.SCALE);
+        public static final float Speed = 0.5f * DisplayManager.SCALE;
     }
 
 }

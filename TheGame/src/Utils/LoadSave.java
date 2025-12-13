@@ -1,6 +1,7 @@
 package Utils;
 
 import static Utils.Constans.EnemyConstants.ENEMY1;
+import static Utils.Constans.EnemyConstants.ENEMY2;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import Entitties.Enemy1;
+import Entitties.Enemy2;
 
 public class LoadSave {
     public static final String PLAYER_ATLAS = "main_character.png";
@@ -42,6 +44,8 @@ public class LoadSave {
 	public static final String CITY_2 = "City2.png";
 	public static final String CITY_3 = "City3.png";
 	public static final String CITY_4 = "City4.png";
+
+	public static final String BULLET = "bullet.png";
 	
 
     public static BufferedImage getSpriteAtlas(String fileName) {
@@ -78,6 +82,23 @@ public class LoadSave {
 			}
 			return list;
 	}
+
+	public static ArrayList<Enemy2> GetEnemy2s() {
+    BufferedImage img = getSpriteAtlas(LEVEL_1);
+    ArrayList<Enemy2> list = new ArrayList<>();
+    
+    
+    for(int j = 0; j < img.getHeight(); j++)
+        for(int i = 0; i < img.getWidth(); i++) {
+            Color color = new Color(img.getRGB(i, j));
+            int value = color.getBlue();
+            
+            if (value == ENEMY2) { 
+                list.add(new Enemy2(i * DisplayManager.TILES_SIZE, j * DisplayManager.TILES_SIZE));
+            }
+        }
+        return list;
+}
 
 	
 	public static BufferedImage[] GetAllLevels() {

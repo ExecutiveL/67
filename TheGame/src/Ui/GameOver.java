@@ -16,12 +16,15 @@ public class GameOver {
         this.playing = playing;
     }
     public void draw(Graphics g) {
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, DisplayManager.GAME_HEIGHT, DisplayManager.GAME_HEIGHT);
+     
+    g.setColor(new Color(0, 0, 0, 150)); 
+    
 
-        g.setColor(Color.WHITE);
-        g.drawString("Game Over", DisplayManager.GAME_WIDTH/2, 150);
-        g.drawString("Press Enter to go to Menu", DisplayManager.GAME_WIDTH/2, 300);
+    g.fillRect(0, 0, DisplayManager.GAME_WIDTH, DisplayManager.GAME_HEIGHT); 
+
+    g.setColor(Color.WHITE);
+    g.drawString("Game Over", DisplayManager.GAME_WIDTH/2, 150);
+    g.drawString("Press Enter to go to Menu", DisplayManager.GAME_WIDTH/2, 300);
         
     }
     public void KeyPressed(KeyEvent e) {

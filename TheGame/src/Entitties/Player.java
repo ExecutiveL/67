@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-
+import GameStates.Playing;
 import Utils.LoadSave;
 import Utils.Checker;
 import Utils.DisplayManager;
@@ -14,11 +14,12 @@ import static Utils.Constans.PlayerConstants.*;
 
 
 public class Player extends Entity {
-
+    private Playing playing;
     private BufferedImage[][] animations;
     private int animationIndex, animationTick, animationSpeed = 30;
     private int playerAction = IDLE;
     private boolean moving = false, attacking = false;
+    private boolean die,dead;
     private int[][] leveldata;
     private boolean left,right,jump;
     private float playerSpeed = 2.0f;
@@ -53,21 +54,32 @@ public class Player extends Entity {
     private int CurrentHealth = MaxHealth;
     private int healthWidth = HealthBarWidth;
     
-    public Player(float x, float y,int width, int height) {
+    
+    
+    public Player(float x, float y,int width, int height, Playing playing) {
         super(x, y,width,height);
         loadAnimations();
         Hitbox(x, y, 22 * DisplayManager.SCALE, 19 * DisplayManager.SCALE);
+        this.playing = playing;
 
     }
 
     public void update() {
         updateHealthBar();
+
+        if (dead) {
+        return;
+        }
+
         updatePosition();
        
         //OutofBounds();
         updateAnimation();
         setAnimation();
 
+        if (CurrentHealth <=0) {
+            playing.setGameOver(true);
+        }
        
         
         
@@ -112,21 +124,36 @@ public class Player extends Entity {
             if (animationIndex >= GetSpriteAmount(playerAction)) {
                 animationIndex = 0;
                 attacking = false;
+            if (playerAction == DYING) {
+                animationIndex =GetSpriteAmount(DYING) -1;
+                dead=true;
+            }
+            if (playerAction == HIT) {
+                playerAction = IDLE;
+            }
+            if (playerAction != DYING && playerAction != HIT) {
+                 animationIndex = 0;
             }
         }
+     }
     }
 
     public void setAnimation() {
-        int start = playerAction;
+       int start = playerAction;
 
+    if (die) {
+        playerAction = DYING;
+    } else if (playerAction == HIT) {
+
+    } else { 
+        
         if (AtAir) {
-            if (AirSpeed < 0) {
+             if (AirSpeed < 0) {
                  playerAction = JUMPING;
-            } else {
-                playerAction = FALLING;
-            }
+             } else {
+                 playerAction = FALLING;
+             }
         }
-
         else if (moving) {
             playerAction = WALKING;
         } else {
@@ -136,17 +163,22 @@ public class Player extends Entity {
         if (attacking) {
             playerAction = ATTACKING;
         }
-        if (start != playerAction) {
-            animationTick = 0;
-            animationIndex = 0;
-        }
-       
+    } 
+    
+    if (start != playerAction) {
+        animationTick = 0;
+        animationIndex = 0;
     }
+}
 
     public void updatePosition() {
 
         moving = false;
         
+        if (die) {
+            return;
+        }
+
         if (jump) {
            Jumping();
         }
@@ -217,7 +249,7 @@ public class Player extends Entity {
 
     private void loadAnimations() {
             BufferedImage image = LoadSave.getSpriteAtlas(LoadSave.PLAYER_ATLAS);
-            animations = new BufferedImage[5][];
+            animations = new BufferedImage[7][];
 
             for (int i = 0; i < animations.length; i++) {
                 int frameCount = GetSpriteAmount(i);
@@ -237,10 +269,19 @@ public class Player extends Entity {
     }
     public void ChangeHealth(int value) {
         CurrentHealth += value;
+        System.out.println("Player Current Health: " + CurrentHealth);
         if (CurrentHealth <= 0) {
             CurrentHealth = 0;
+            die = true;
+            
         } else if (CurrentHealth >= MaxHealth) {
             CurrentHealth = MaxHealth;
+            
+        }
+        if (value <0 &&!die) {
+            playerAction = HIT;
+            animationTick = 0;
+            animationIndex = 0;
         }
     }
     
@@ -276,6 +317,21 @@ public class Player extends Entity {
     }
     public void setJumping(boolean jump) {
         this.jump = jump;
+    }
+    public boolean isDead() {
+    return dead;
+}
+
+    public void shoot() {
+      
+    int dir = flipX; 
+    
+    
+    int startX = (int) hitbox.x;
+    int startY = (int) hitbox.y + (int) (height / 2.5); 
+    
+    playing.getProjectileManager().newProjectile(startX, startY, dir);
+    System.out.println("SHOT FIRED!");
     }
 }
 
