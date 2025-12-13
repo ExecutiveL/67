@@ -30,7 +30,7 @@ public class Player extends Entity {
 
     //talon
     private float AirSpeed =0f;
-    private float Gravity = 0.05f * DisplayManager.SCALE;
+    private float Gravity = 0.035f * DisplayManager.SCALE;
     private float JumpSpeed = -2.25f * DisplayManager.SCALE;
     private float FallSpeed = 0.5f * DisplayManager.SCALE;
     private boolean AtAir = false;
