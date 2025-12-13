@@ -144,7 +144,7 @@ public class Playing extends State implements StateMethods {
     }
 
     private void drawBG(Graphics g) {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 20; i++) {
             g.drawImage(mountain,i *mountainwidth - (int)(xLvlOffset * 0.3), (int)( 150 * DisplayManager.SCALE), mountainwidth, mountainheight,null);
             g.drawImage(grass,i * grasswidth - (int)(xLvlOffset * 0.4), (int)( 175 * DisplayManager.SCALE), grasswidth, grassheight,null);
             g.drawImage(treesB,i * grasswidth - (int)(xLvlOffset * 0.5), (int)( 200 * DisplayManager.SCALE), grasswidth, grassheight,null);
